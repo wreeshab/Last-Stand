@@ -1,5 +1,11 @@
 class Sprite {
-  constructor({ position, imageSrc, frameRate = 1, enlargementRatio = 1 , frameBuffer = 1}) {
+  constructor({
+    position,
+    imageSrc,
+    frameRate = 1,
+    enlargementRatio = 1,
+    frameBuffer = 1,
+  }) {
     this.position = position;
     console.log(imageSrc);
     this.image = new Image();

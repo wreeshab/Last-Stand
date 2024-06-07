@@ -74,6 +74,26 @@ const player = new Player({
   enlargementRatio: 2.7,
   frameBuffer: 6,
   gunImageSrc: "./assets/guns/6.png",
+  animations : {
+    Idle : {
+      imageSrc : "./assets/hero1/Biker_idle.png",
+      frameRate : 4,
+      frameBuffer : 6,
+    
+    },
+    Run: {
+      imageSrc: "./assets/hero1/Biker_run_right.png",
+      frameRate : 6,
+      frameBuffer : 6,
+    },
+    Jump:{
+      imageSrc: "./assets/hero1/Biker_jump.png",
+      frameRate : 4,
+      frameBuffer : 15,
+    
+    }
+
+  }
 });
 
 document.addEventListener("keydown", (e) => {
