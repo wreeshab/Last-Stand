@@ -68,11 +68,12 @@ const bottomPlatform = new BottomPlatform({
 });
 
 const player = new Player({
-  position: { x: canvas.width / 2 - 50, y: 100 },
+  position: { x: canvas.width / 2 - 50, y: 500 },
   imageSrc: "./assets/hero1/Biker_idle.png",
   frameRate: 4,
-  enlargementRatio: 2.5,
+  enlargementRatio: 2.7,
   frameBuffer: 6,
+  gunImageSrc: "./assets/guns/6.png",
 });
 
 document.addEventListener("keydown", (e) => {
