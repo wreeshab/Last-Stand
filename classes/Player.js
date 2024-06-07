@@ -51,24 +51,23 @@ class Player extends Sprite {
     const deltaY = mouseY - this.position.y - this.height / 2;
     const angle = Math.atan2(deltaY, deltaX);
     this.gunAngle = angle;
+    this.adjustedGunAngle = this.gunAngle - 45;
   }
 
   updateActualBox() {
-    if(this.isFacingRight){
+    if (this.isFacingRight) {
       this.actualBox = {
         position: { x: this.position.x + 7, y: this.position.y + 30 },
         width: 60,
         height: 90,
       };
-    }else{
+    } else {
       this.actualBox = {
         position: { x: this.position.x + 65, y: this.position.y + 30 },
         width: 60,
         height: 90,
       };
     }
-
-    
   }
 
   draw() {
@@ -98,7 +97,8 @@ class Player extends Sprite {
       this.actualBox.position.x + this.actualBox.width / 2,
       this.actualBox.position.y + this.actualBox.height / 2
     );
-    ctx.rotate(this.gunAngle - 45);
+    this.adjustedGunAngle = this.gunAngle - Math.PI / 4 + Math.PI / 120; //this math.pi / 120 is some visual adjustment value that i found by trail and error
+    ctx.rotate(this.adjustedGunAngle);
     const scaleRatio = 0.2;
     ctx.drawImage(
       this.gunImage,
@@ -117,11 +117,42 @@ class Player extends Sprite {
     ctx.restore();
   }
 
+  drawTrajectories() {
+    const initVelocity = 250;
+    const timeStep = 0.05;
+    const maxTime = 3; // Adjusted for better visualization
+    const startX = this.actualBox.position.x + this.actualBox.width / 2;
+    const startY = this.actualBox.position.y + this.actualBox.height / 2;
+
+    // ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    for (let t = 0; t < maxTime; t += timeStep) {
+      const x = startX + initVelocity * t * Math.cos(this.gunAngle);
+      const y =
+        startY + initVelocity * t * Math.sin(this.gunAngle) + 0.5 * 100 * t * t;
+      // console.log(x, y);
+      this.fillDot(x, y);
+      this.zindex = -4;
+    }
+    // ctx.strokeStyle = "red";
+    // ctx.lineWidth = 3;
+    // ctx.stroke();
+  }
+  fillDot(x, y) {
+    const radius = 2;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx.fillStyle = "rgba(255,255,255,0.95)";
+    ctx.fill();
+  }
+
   update() {
-    this.draw();
     super.update();
     this.updateActualBox();
+    this.drawTrajectories();
+    this.draw();
     this.drawGun();
+    //here againn to put some visually pleasing looks the dots will be ath the back then the player then the gun in the very front
 
     this.velocity.y += gravity;
 
