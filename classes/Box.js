@@ -1,3 +1,4 @@
+
 class Box {
   constructor({ position, width, height, hitpoints }) {
     this.position = position;
@@ -7,6 +8,7 @@ class Box {
     this.crateImage.src = "./assets/crate.png";
     this.hitpoints = 100;
   }
+
   draw() {
     ctx.drawImage(
       this.crateImage,
@@ -16,23 +18,24 @@ class Box {
       this.height
     );
   }
-  takeDamage(damage) {
+
+  takeDamageBox(damage) {
     this.hitpoints -= damage;
     console.log(this.hitpoints);
   }
-  boxIsDestroyed(){
-    if(this.hitpoints <= 0){
-      return true;
-    }
-    return false;
+
+  boxIsDestroyed() {
+    return this.hitpoints <= 0;
   }
 }
+
 class BottomPlatform {
   constructor({ position, width, height }) {
     this.position = position;
     this.width = width;
     this.height = height;
   }
+
   draw() {
     ctx.fillStyle = "transparent";
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
