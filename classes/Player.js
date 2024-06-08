@@ -7,6 +7,7 @@ class Player extends Sprite {
     frameBuffer,
     gunImageSrc,
     animations,
+    boxes,
   }) {
     super({ position, imageSrc, frameRate, enlargementRatio, frameBuffer });
     this.velocity = { x: 0, y: 0 };
@@ -23,6 +24,7 @@ class Player extends Sprite {
     this.gunAngle = 0;
 
     this.bullets = [];
+    this.boxes = boxes;
 
     const self = this;
     document.addEventListener("mousemove", function (e) {
@@ -31,7 +33,6 @@ class Player extends Sprite {
     document.addEventListener("mousedown", function () {
       self.shootBullet();
     });
-
 
     this.animations = animations;
 
@@ -65,13 +66,13 @@ class Player extends Sprite {
       this.actualBox = {
         position: { x: this.position.x + 7, y: this.position.y + 30 },
         width: 60,
-        height: 90,
+        height: 95,
       };
     } else {
       this.actualBox = {
         position: { x: this.position.x + 65, y: this.position.y + 30 },
         width: 60,
-        height: 90,
+        height: 95,
       };
     }
   }
@@ -162,15 +163,19 @@ class Player extends Sprite {
         y: Math.sin(this.gunAngle) * 20,
       },
       bulletGravity: 0.65, // Lowered gravity for better visual effect
+      boxes : this.boxes,
+      bullets : this.bullets,
     });
     this.bullets.push(bullet);
   }
+  
   update() {
     super.update();
     this.updateActualBox();
     this.drawTrajectories();
     this.draw();
     this.drawGun();
+    
 
     this.bullets.forEach((bullet, index) => {
       bullet.update();

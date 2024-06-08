@@ -92,8 +92,8 @@ const player = new Player({
       frameBuffer : 15,
     
     }
-
-  }
+  },
+  boxes,
 });
 
 document.addEventListener("keydown", (e) => {
@@ -150,7 +150,6 @@ function resolveVerticalCollision(player, platform) {
 
   return false;
 }
-
 function collisionBetweenPlayerAndPlatform(player, platform) {
   const playerBottom = player.actualBox.position.y + player.actualBox.height;
   const platformTop = platform.position.y;
@@ -161,47 +160,46 @@ function collisionBetweenPlayerAndPlatform(player, platform) {
   const playerLeft = player.actualBox.position.x;
   const platformLeft = platform.position.x;
 
-  // Bottom collision
+  // Bottom collision chking
   if (
     playerBottom >= platformTop &&
     playerTop < platformTop &&
     playerRight > platformLeft &&
-    playerLeft < platformRight
+    playerLeft < platformRight &&
+    player.velocity.y >= 0
   ) {
-    player.position.y =
-      platformTop -
-      player.actualBox.height -
-      (player.actualBox.position.y - player.position.y);
+    player.position.y = platformTop - player.actualBox.height - (player.actualBox.position.y - player.position.y) - 0.1;
     player.velocity.y = 0;
     player.isOnGround = true;
   }
 
-  // Left collision
+  // Left collision chking
   if (
     playerRight > platformLeft &&
     playerLeft < platformLeft &&
-    playerBottom > platformTop &&
-    playerTop < platformBottom
+    playerBottom > platformTop + 1 &&
+    playerTop < platformBottom - 1 &&
+    player.velocity.x > 0
   ) {
-    player.position.x =
-      platformLeft -
-      player.actualBox.width -
-      (player.actualBox.position.x - player.position.x);
+    player.position.x = platformLeft - player.actualBox.width - (player.actualBox.position.x - player.position.x) - 0.1;
     player.velocity.x = 0;
   }
 
-  // Right collision
+  // Right collision chking
   if (
     playerLeft < platformRight &&
     playerRight > platformRight &&
-    playerBottom > platformTop &&
-    playerTop < platformBottom
+    playerBottom > platformTop + 1 &&
+    playerTop < platformBottom - 1 &&
+    player.velocity.x < 0
   ) {
-    player.position.x =
-      platformRight - (player.actualBox.position.x - player.position.x);
+    player.position.x = platformRight - (player.actualBox.position.x - player.position.x) + 0.1;
     player.velocity.x = 0;
   }
 }
+
+const gameLogic = new GameLogic({player, boxes, })
+
 function mainGameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
@@ -212,6 +210,7 @@ function mainGameLoop() {
     collisionBetweenPlayerAndPlatform(player, box);
   });
   bottomPlatform.draw("transparent");
+  gameLogic.update();
 
   collisionBetweenPlayerAndPlatform(player, bottomPlatform);
 
