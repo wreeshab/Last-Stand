@@ -22,10 +22,16 @@ class Player extends Sprite {
     this.gunImage.src = gunImageSrc;
     this.gunAngle = 0;
 
+    this.bullets = [];
+
     const self = this;
     document.addEventListener("mousemove", function (e) {
       self.updateGunAngle(e);
     });
+    document.addEventListener("mousedown", function () {
+      self.shootBullet();
+    });
+
 
     this.animations = animations;
 
@@ -132,7 +138,6 @@ class Player extends Sprite {
         startY + initVelocity * t * Math.sin(this.gunAngle) + 0.5 * 100 * t * t;
       // console.log(x, y);
       this.fillDot(x, y);
-      this.zindex = -4;
     }
     // ctx.strokeStyle = "red";
     // ctx.lineWidth = 3;
@@ -146,12 +151,33 @@ class Player extends Sprite {
     ctx.fill();
   }
 
+  shootBullet() {
+    const bullet = new Bullet({
+      position: {
+        x: this.actualBox.position.x + this.actualBox.width / 2,
+        y: this.actualBox.position.y + this.actualBox.height / 2,
+      },
+      velocity: {
+        x: Math.cos(this.gunAngle) * 20,
+        y: Math.sin(this.gunAngle) * 20,
+      },
+      bulletGravity: 0.65, // Lowered gravity for better visual effect
+    });
+    this.bullets.push(bullet);
+  }
   update() {
     super.update();
     this.updateActualBox();
     this.drawTrajectories();
     this.draw();
     this.drawGun();
+
+    this.bullets.forEach((bullet, index) => {
+      bullet.update();
+      if (bullet.isItOffScreen()) {
+        this.bullets.splice(index, 1);
+      }
+    });
     //here againn to put some visually pleasing looks the dots will be ath the back then the player then the gun in the very front
 
     this.velocity.y += gravity;
