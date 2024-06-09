@@ -18,6 +18,7 @@ class Player extends Sprite {
       width: 0,
       height: 0,
     };
+    this.dead = false;
 
     this.gunImage = new Image();
     this.gunImage.src = gunImageSrc;
@@ -25,6 +26,8 @@ class Player extends Sprite {
 
     this.bullets = [];
     this.boxes = boxes;
+
+    this.hitpoints = 100;
 
     const self = this;
     document.addEventListener("mousemove", function (e) {
@@ -41,6 +44,15 @@ class Player extends Sprite {
       image.src = this.animations[k].imageSrc;
       this.animations[k].image = image;
     }
+    this.hitPointsBar = new HitPointsBar({
+      position: {
+        x: this.actualBox.position.x + this.width / 2 - 40,
+        y: this.actualBox.position.y - 10,
+      },
+      hitpoints: this.hitpoints,
+      totalHitpoints: 100,
+      color: "white",
+    });
   }
 
   switchSprite(sprite) {
@@ -77,27 +89,6 @@ class Player extends Sprite {
     }
   }
 
-  draw() {
-    ctx.save();
-
-    if (!this.isFacingRight) {
-      ctx.translate(this.position.x + this.width / 2, 0); // Move to the sprite's horizontal center
-      ctx.scale(-1, 1); // Flip the context horizontally
-      ctx.translate(-this.position.x - this.width / 2, 0); // Move back to the original position
-    }
-
-    super.draw();
-
-    ctx.restore();
-    ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
-    ctx.fillRect(
-      this.actualBox.position.x,
-      this.actualBox.position.y,
-      this.actualBox.width,
-      this.actualBox.height
-    );
-  }
-
   drawGun() {
     ctx.save();
     ctx.translate(
@@ -124,34 +115,6 @@ class Player extends Sprite {
     ctx.restore();
   }
 
-  // drawTrajectories() {
-  //   const initVelocity = 250;
-  //   const timeStep = 0.05;
-  //   const maxTime = 3; // Adjusted for better visualization
-  //   const startX = this.actualBox.position.x + this.actualBox.width / 2;
-  //   const startY = this.actualBox.position.y + this.actualBox.height / 2;
-
-  //   // ctx.beginPath();
-  //   ctx.moveTo(startX, startY);
-  //   for (let t = 0; t < maxTime; t += timeStep) {
-  //     const x = startX + initVelocity * t * Math.cos(this.gunAngle);
-  //     const y =
-  //       startY + initVelocity * t * Math.sin(this.gunAngle) + 0.5 * 100 * t * t;
-  //     // console.log(x, y);
-  //     this.fillDot(x, y);
-  //   }
-  //   // ctx.strokeStyle = "red";
-  //   // ctx.lineWidth = 3;
-  //   // ctx.stroke();
-  // }
-  // fillDot(x, y) {
-  //   const radius = 2;
-  //   ctx.beginPath();
-  //   ctx.arc(x, y, radius, 0, 2 * Math.PI);
-  //   ctx.fillStyle = "rgba(255,255,255,0.95)";
-  //   ctx.fill();
-  // }
-
   updateTrajectory() {
     const trajectory = new Trajectory({
       startX: this.actualBox.position.x + this.actualBox.width / 2,
@@ -175,20 +138,59 @@ class Player extends Sprite {
         x: Math.cos(this.gunAngle) * 20,
         y: Math.sin(this.gunAngle) * 20,
       },
-      bulletGravity: 0.65, // Lowered gravity for better visual effect
+      bulletGravity: 0.65, //dont change this gravity value:(
       boxes: this.boxes,
       bullets: this.bullets,
     });
     this.bullets.push(bullet);
   }
 
+  playerGettingDamage(damage) {
+    this.hitpoints -= damage;
+    if (this.hitpoints <= 0) {
+      this.dead = true;
+    }
+    if(this.hitpoints <= 35){
+      this.hitPointsBar.color = "red"
+    }
+  }
+
+  draw() {
+    ctx.save();
+
+    if (!this.isFacingRight) {
+      ctx.translate(this.position.x + this.width / 2, 0); // Move to the sprite's horizontal center
+      ctx.scale(-1, 1); // Flip the context horizontally
+      ctx.translate(-this.position.x - this.width / 2, 0); // Move back to the original position
+    }
+
+    super.draw();
+
+    ctx.restore();
+    ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
+    ctx.fillRect(
+      this.actualBox.position.x,
+      this.actualBox.position.y,
+      this.actualBox.width,
+      this.actualBox.height
+    );
+
+    this.hitPointsBar.position = {
+      x: this.actualBox.position.x + this.actualBox.width / 2 - 40,
+      y: this.actualBox.position.y - 17,
+    };
+
+    this.hitPointsBar.render();
+  }
+
   update() {
     super.update();
     this.updateActualBox();
-    this.updateTrajectory()
+    this.updateTrajectory();
     // this.drawTrajectories();
     this.draw();
     this.drawGun();
+    this.hitPointsBar.update(this.hitpoints);
 
     this.bullets.forEach((bullet, index) => {
       bullet.update();
@@ -202,13 +204,13 @@ class Player extends Sprite {
 
     if (keys.a.pressed && this.position.x > 50) {
       this.velocity.x = -5;
-      this.isFacingRight = false; // Update facing direction
+      this.isFacingRight = false;
     } else if (
       keys.d.pressed &&
       this.position.x + this.width < canvas.width - 50
     ) {
       this.velocity.x = 5;
-      this.isFacingRight = true; // Update facing direction
+      this.isFacingRight = true;
     } else if (!keys.a.pressed && !keys.d.pressed && keys.w.pressed) {
       this.velocity.x = 0;
     } else {

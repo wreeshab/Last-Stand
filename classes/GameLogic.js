@@ -78,16 +78,14 @@ class GameLogic {
         }
       }
     });
-    // this.player.bullets.forEach((bullet, i) => {
-    //   this.zombies.forEach((zombie, i) => {
-    //     if (zombie.resolveZombieBulletCollision(bullet)) {
-    //       this.player.bullets.splice(i, 1);
-    //       if (zombie.isZombieDead()) {
-    //         this.zombies.splice(i, 1);
-    //       }
-    //     }
-    //   });
-    // });
+    this.zombies.forEach((zombie,index) =>{
+      zombie.collisionBeteenZombieAndPlayer(this.player)
+    })
+
+
+
+
+
     this.zombies.forEach((zombie) => {
       zombie.update();
     });

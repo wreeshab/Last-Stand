@@ -21,6 +21,8 @@ class ZombieBasic {
     this.direction = originalDirection;
     this.hitpoints = health;
     this.preloadImages();
+    this.attackingGap = 1500;
+    this.lastAttackTime = null;
   }
 
   preloadImages() {
@@ -161,6 +163,20 @@ class ZombieBasic {
 
     this.zombieHitPointsBar.render();
   }
+
+  collisionBeteenZombieAndPlayer(player){
+    this.timeNowForZombiePlayer = new Date()
+    if(this.position.x + this.width > player.position.x && this.position.x < player.position.x + player.width && this.position.y - this.height < player.position.y + player.height && this.position.y > player.position.y){
+      console.log("collision between zombie and player")
+      if( this.timeNowForZombiePlayer - this.lastAttackTime > this.attackingGap){
+        this.lastAttackTime = this.timeNowForZombiePlayer;
+        player.playerGettingDamage(6);
+        console.log("player getting damage")
+      }
+    }
+  }
+
+
 
   update() {
     if (!this.isZombieTouchingBox && this.velocity.x != 0) {
