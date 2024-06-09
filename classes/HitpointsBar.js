@@ -8,7 +8,7 @@ class HitPointsBar {
         this.color = color;
     }
     render(){
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = this.color;
         ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
     update(hitpoints){

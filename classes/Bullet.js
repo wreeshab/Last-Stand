@@ -6,6 +6,7 @@ class Bullet {
       this.bulletGravity = bulletGravity;
       this.boxes = boxes;
       this.bullets = bullets;
+      this.damage = 10
       
     }
   

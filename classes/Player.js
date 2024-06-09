@@ -66,13 +66,13 @@ class Player extends Sprite {
       this.actualBox = {
         position: { x: this.position.x + 7, y: this.position.y + 30 },
         width: 60,
-        height: 95,
+        height: 100,
       };
     } else {
       this.actualBox = {
         position: { x: this.position.x + 65, y: this.position.y + 30 },
         width: 60,
-        height: 95,
+        height: 100,
       };
     }
   }

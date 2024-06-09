@@ -80,11 +80,48 @@ class ZombieBasic {
       }
     }
   }
+  resolveZombieBulletCollision(bullets) {
+    let collisionDetected = false;
+    for (let i = bullets.length - 1; i >= 0; i--) {
+        const bullet = bullets[i];
+        if (
+            bullet.position.x + bullet.radius > this.position.x &&
+            bullet.position.x - bullet.radius < this.position.x + this.width &&
+            bullet.position.y + bullet.radius > this.position.y - this.height &&
+            bullet.position.y - bullet.radius < this.position.y &&
+            this.dead === false
+        ) {
+            console.log("Collision detected!");
+            this.zombieIsTakingDamage(bullet.damage);
+
+            bullets.splice(i, 1); // Remove bullet from array
+            collisionDetected = true; // Set collision flag to true
+        }
+    }
+    return collisionDetected; // Return true if collision detected
+}
+
+
+  zombieIsTakingDamage(damage) {
+    this.hitpoints -= damage;
+    if(this.hitpoints <= 30 ){
+      this.zombieHitPointsBar.color = "red"
+    }
+    if (this.hitpoints <= 0) {
+      this.dead = true;
+    }
+  }
+  isZombieDead() {
+    if (this.hitpoints <= 0) {
+      return true;
+    }
+    return false;
+  }
   draw() {
     const image = this.images[this.currentAnimation][this.currentFrame - 1];
     if (image) {
       ctx.save();
-  
+
       if (this.direction === "left") {
         ctx.translate(
           this.position.x + this.width / 2,
@@ -96,7 +133,7 @@ class ZombieBasic {
           -this.position.y + this.height / 2
         );
       }
-  
+
       ctx.drawImage(
         image,
         this.position.x,
@@ -104,10 +141,10 @@ class ZombieBasic {
         this.width,
         this.height
       );
-  
+
       ctx.restore();
     }
-  
+
     ctx.fillStyle = "rgba(255, 0, 0, 0.4)";
     ctx.fillRect(
       this.position.x,
@@ -115,16 +152,16 @@ class ZombieBasic {
       this.width,
       this.height
     );
-  
+
     // Update hit points bar position
     this.zombieHitPointsBar.position = {
       x: this.position.x + this.width / 2 - 40,
-      y: this.position.y - this.height -17
+      y: this.position.y - this.height - 17,
     };
-  
+
     this.zombieHitPointsBar.render();
   }
-  
+
   update() {
     if (!this.isZombieTouchingBox && this.velocity.x != 0) {
       // Move the zombie
@@ -136,9 +173,14 @@ class ZombieBasic {
       this.position.x += this.velocity.x;
 
       this.setAnimation("Walk");
-    } else {
+    } else if(this.velocity == 0 && this.dead == false) {
       this.setAnimation("Attack");
+    } else if(this.velocity == 0 && this.dead == true) {
+      this.setAnimation("Death");
+    } else {
+      // this.setAnimation("Idle");
     }
+
 
     this.updateFrameForZombie();
     this.zombieHitPointsBar.update(this.hitpoints);

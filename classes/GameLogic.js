@@ -2,7 +2,7 @@ class GameLogic {
   constructor({ player, boxes }) {
     this.zombies = [];
     this.waveNumber = 1;
-    this.spawningGap = 2500;
+    this.spawningGap = 5000;
     this.player = player;
     this.boxes = boxes;
     this.lastSpawn = Date.now();
@@ -49,6 +49,11 @@ class GameLogic {
             frameRate: 6,
             frameBuffer: 15,
           },
+          Dead: {
+            imageSrc: "assets/zombies/Zombie1/animation/Dead1.png",
+            frameRate: 8,
+            frameBuffer: 10,
+          },
         },
         originalDirection: direction,
       })
@@ -60,8 +65,31 @@ class GameLogic {
       this.spawnZombies();
       this.lastSpawn = timeNow;
     }
-    this.zombies.forEach((zombie)=>{
+    this.zombies.forEach((zombie) => {
+      if (zombie.resolveZombieBulletCollision(this.player.bullets)) {
+        if (zombie.isZombieDead()) {
+          zombie.velocity.x = 0;
+          new Promise((resolve) => {
+            zombie.setAnimation("Dead");
+            setTimeout(resolve, 1700); //this value is finalised after a lot of trail and error, edit even if need be. :)
+          }).then(() => {
+            this.zombies.splice(this.zombies.indexOf(zombie), 1);
+          });
+        }
+      }
+    });
+    // this.player.bullets.forEach((bullet, i) => {
+    //   this.zombies.forEach((zombie, i) => {
+    //     if (zombie.resolveZombieBulletCollision(bullet)) {
+    //       this.player.bullets.splice(i, 1);
+    //       if (zombie.isZombieDead()) {
+    //         this.zombies.splice(i, 1);
+    //       }
+    //     }
+    //   });
+    // });
+    this.zombies.forEach((zombie) => {
       zombie.update();
-    })
+    });
   }
 }
