@@ -1,4 +1,3 @@
-
 class Box {
   constructor({ position, width, height, hitpoints }) {
     this.position = position;
@@ -7,6 +6,16 @@ class Box {
     this.crateImage = new Image();
     this.crateImage.src = "./assets/crate.png";
     this.hitpoints = 100;
+
+    // Initialize hit points bar
+    this.boxHitPointsBar = new HitPointsBar({
+      position: {
+        x: this.position.x + this.width / 2 - 40,
+        y: this.position.y - 17,
+      },
+      hitpoints: this.hitpoints,
+      totalHitpoints: 100,
+    });
   }
 
   draw() {
@@ -17,6 +26,10 @@ class Box {
       this.width,
       this.height
     );
+
+    // Render hit points bar
+    this.boxHitPointsBar.update(this.hitpoints);
+    // this.boxHitPointsBar.render();
   }
 
   takeDamageBox(damage) {

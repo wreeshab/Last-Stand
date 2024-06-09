@@ -17,4 +17,18 @@ body {
   width: 1408px;
   border: 5px ridge rgb(86, 17, 17);
   background-color: aliceblue;
+  scale: .9;
+}
+#inventory{
+  display: flex;
+  width: 500px;
+  height: 50px;
+  background-color: blue;
+}
+#control-panel{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  
 }

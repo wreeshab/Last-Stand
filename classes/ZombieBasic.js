@@ -19,8 +19,8 @@ class ZombieBasic {
     this.width = 0;
     this.height = 0;
     this.direction = originalDirection;
+    this.hitpoints = health;
     this.preloadImages();
-    this.isZombieTouchingBox = false;
   }
 
   preloadImages() {
@@ -41,6 +41,19 @@ class ZombieBasic {
         frames.push(img);
       }
       this.images[animation] = frames;
+    });
+    this.initHitPointsBar();
+  }
+
+  initHitPointsBar() {
+    this.zombieHitPointsBar = new HitPointsBar({
+      position: {
+        x: this.position.x + this.width / 2 - 40,
+        y: this.position.y - 17,
+      },
+      hitpoints: this.hitpoints,
+      totalHitpoints: 100,
+      color: "white",
     });
   }
 
@@ -67,12 +80,11 @@ class ZombieBasic {
       }
     }
   }
-
   draw() {
     const image = this.images[this.currentAnimation][this.currentFrame - 1];
     if (image) {
       ctx.save();
-
+  
       if (this.direction === "left") {
         ctx.translate(
           this.position.x + this.width / 2,
@@ -84,7 +96,7 @@ class ZombieBasic {
           -this.position.y + this.height / 2
         );
       }
-
+  
       ctx.drawImage(
         image,
         this.position.x,
@@ -92,10 +104,10 @@ class ZombieBasic {
         this.width,
         this.height
       );
-
+  
       ctx.restore();
     }
-
+  
     ctx.fillStyle = "rgba(255, 0, 0, 0.4)";
     ctx.fillRect(
       this.position.x,
@@ -103,9 +115,18 @@ class ZombieBasic {
       this.width,
       this.height
     );
+  
+    // Update hit points bar position
+    this.zombieHitPointsBar.position = {
+      x: this.position.x + this.width / 2 - 40,
+      y: this.position.y - this.height -17
+    };
+  
+    this.zombieHitPointsBar.render();
   }
+  
   update() {
-    if (!this.isZombieTouchingBox && this.velocity.x != 0 ) {
+    if (!this.isZombieTouchingBox && this.velocity.x != 0) {
       // Move the zombie
       if (this.direction === "left") {
         this.velocity.x = -1;
@@ -113,65 +134,15 @@ class ZombieBasic {
         this.velocity.x = 1;
       }
       this.position.x += this.velocity.x;
-      this.position.y += this.velocity.y;
-      
-      // Set animation to Walk
+
       this.setAnimation("Walk");
     } else {
-      // Zombie is either not moving or touching a box, set animation to Attack
       this.setAnimation("Attack");
     }
-  
-    // Update frame for the zombie animation
-    this.updateFrameForZombie();
-  
-    // Draw the zombie
-    this.draw();
-  }
-  
-  resolveBoxZombieCollision(box, zombies) {
-    let collidedWithBox = false;
-    zombies.forEach((zombie) => {
-      if (zombie !== this) {
-        if (
-          this.position.x + this.width > box.position.x &&
-          this.position.x < box.position.x + box.width &&
-          this.position.y + this.height > box.position.y &&
-          this.position.y - this.height < box.position.y + box.height
-        ) {
-          // Right side collision
-          if (
-            this.position.x + this.width > box.position.x &&
-            this.position.x < box.position.x + box.width &&
-            this.velocity.x > 0
-          ) {
-            this.position.x = box.position.x - this.width - 0.01;
-            this.velocity.x = 0;
-            this.isZombieTouchingBox = true;
-            box.takeDamageBox(50);
-            collidedWithBox = true;
-          }
-          // Left side collision
-          if (
-            this.position.x < box.position.x + box.width &&
-            this.position.x + this.width > box.position.x &&
-            this.velocity.x < 0
-          ) {
-            this.position.x = box.position.x + box.width + 0.01;
-            this.velocity.x = 0;
-            this.isZombieTouchingBox = true;
-            box.takeDamageBox(50);
-            collidedWithBox = true;
-          }
-        } else {
-          this.isZombieTouchingBox = false;
-        }
-      }
-    });
 
-    // If no collision occurred with the box, reset the flag
-    if (!collidedWithBox) {
-      this.isZombieTouchingBox = false;
-    }
+    this.updateFrameForZombie();
+    this.zombieHitPointsBar.update(this.hitpoints);
+
+    this.draw();
   }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,33 @@
     <link rel="icon" href="assets/favicon.png">
     <title>Last Stand</title>
 </head>
+
 <body>
     <canvas id="canvas"></canvas>
+    <div id="control-panel">
+        <div id="inventory">
+            <div id="one"></div>
+            <div id="two"></div>
+            <div id="three"></div>
+            <div id="four"></div>
+            <div id="five"></div>
+            <div id="six"></div>
+            <div id="seven"></div>
+            <div id="eight"></div>
+            <div id="nine"></div>
+            <div id="ten"></div>
+        </div>
+        <div id="control-buttons">
+            <button id="pause">Pause</button>
+            <button id="restart">Restart</button>
+            
+
+        </div>
+    </div>
+
     <script src="classes/Bullet.js"></script>
+    <script src="classes/HitpointsBar.js"></script>
+    <script src="classes/Trajectory.js"></script>
     <script src="classes/Sprite.js"></script>
     <script src="classes/Player.js"></script>
     <script src="classes/Box.js"></script>
@@ -17,4 +42,5 @@
     <script src="classes/GameLogic.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
