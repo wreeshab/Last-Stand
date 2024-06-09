@@ -71,7 +71,7 @@ class GameLogic {
           zombie.velocity.x = 0;
           new Promise((resolve) => {
             zombie.setAnimation("Dead");
-            setTimeout(resolve, 1700); //this value is finalised after a lot of trail and error, edit even if need be. :)
+            setTimeout(resolve, 1300); //this value = 1300 is finalised after a lot of trail and error, edit even if need be. :)
           }).then(() => {
             this.zombies.splice(this.zombies.indexOf(zombie), 1);
           });
