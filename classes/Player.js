@@ -124,32 +124,45 @@ class Player extends Sprite {
     ctx.restore();
   }
 
-  drawTrajectories() {
-    const initVelocity = 250;
-    const timeStep = 0.05;
-    const maxTime = 3; // Adjusted for better visualization
-    const startX = this.actualBox.position.x + this.actualBox.width / 2;
-    const startY = this.actualBox.position.y + this.actualBox.height / 2;
+  // drawTrajectories() {
+  //   const initVelocity = 250;
+  //   const timeStep = 0.05;
+  //   const maxTime = 3; // Adjusted for better visualization
+  //   const startX = this.actualBox.position.x + this.actualBox.width / 2;
+  //   const startY = this.actualBox.position.y + this.actualBox.height / 2;
 
-    // ctx.beginPath();
-    ctx.moveTo(startX, startY);
-    for (let t = 0; t < maxTime; t += timeStep) {
-      const x = startX + initVelocity * t * Math.cos(this.gunAngle);
-      const y =
-        startY + initVelocity * t * Math.sin(this.gunAngle) + 0.5 * 100 * t * t;
-      // console.log(x, y);
-      this.fillDot(x, y);
-    }
-    // ctx.strokeStyle = "red";
-    // ctx.lineWidth = 3;
-    // ctx.stroke();
-  }
-  fillDot(x, y) {
-    const radius = 2;
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
-    ctx.fillStyle = "rgba(255,255,255,0.95)";
-    ctx.fill();
+  //   // ctx.beginPath();
+  //   ctx.moveTo(startX, startY);
+  //   for (let t = 0; t < maxTime; t += timeStep) {
+  //     const x = startX + initVelocity * t * Math.cos(this.gunAngle);
+  //     const y =
+  //       startY + initVelocity * t * Math.sin(this.gunAngle) + 0.5 * 100 * t * t;
+  //     // console.log(x, y);
+  //     this.fillDot(x, y);
+  //   }
+  //   // ctx.strokeStyle = "red";
+  //   // ctx.lineWidth = 3;
+  //   // ctx.stroke();
+  // }
+  // fillDot(x, y) {
+  //   const radius = 2;
+  //   ctx.beginPath();
+  //   ctx.arc(x, y, radius, 0, 2 * Math.PI);
+  //   ctx.fillStyle = "rgba(255,255,255,0.95)";
+  //   ctx.fill();
+  // }
+
+  updateTrajectory() {
+    const trajectory = new Trajectory({
+      startX: this.actualBox.position.x + this.actualBox.width / 2,
+      startY: this.actualBox.position.y + this.actualBox.height / 2,
+      angle: this.gunAngle,
+      velocity: 251,
+      gravity: 100,
+      color: "rgba(255, 255, 255, 0.95)",
+    });
+
+    trajectory.draw();
   }
 
   shootBullet() {
@@ -163,19 +176,19 @@ class Player extends Sprite {
         y: Math.sin(this.gunAngle) * 20,
       },
       bulletGravity: 0.65, // Lowered gravity for better visual effect
-      boxes : this.boxes,
-      bullets : this.bullets,
+      boxes: this.boxes,
+      bullets: this.bullets,
     });
     this.bullets.push(bullet);
   }
-  
+
   update() {
     super.update();
     this.updateActualBox();
-    this.drawTrajectories();
+    this.updateTrajectory()
+    // this.drawTrajectories();
     this.draw();
     this.drawGun();
-    
 
     this.bullets.forEach((bullet, index) => {
       bullet.update();
