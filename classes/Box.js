@@ -16,6 +16,8 @@ class Box {
       hitpoints: this.hitpoints,
       totalHitpoints: 100,
     });
+
+    this.lastHitByZombieToBox = null;
   }
 
   draw() {
@@ -39,6 +41,32 @@ class Box {
 
   boxIsDestroyed() {
     return this.hitpoints <= 0;
+  }
+  collisionBetweenBoxAndZombie(zombie) {
+    if (
+      this.position.x < zombie.position.x + zombie.width &&
+      this.position.x + this.width > zombie.position.x &&
+      zombie.direction === "left"
+    ) {
+      zombie.position.x = this.position.x + this.width + .01;
+      // zombie.velocity.x = 0;
+      zombie.isTouchingBox = true;
+      zombie.setAnimation("Attack")
+    }else if(
+      this.position.x < zombie.position.x + zombie.width &&
+      this.position.x + this.width > zombie.position.x &&
+      zombie.direction === "right"
+    ){
+      zombie.position.x = this.position.x - zombie.width - .01;
+      // zombie.velocity.x = 0;
+      zombie.isTouchingBox = true;
+      zombie.setAnimation("Attack")
+    }else{
+      zombie.isTouchingBox = false;
+      
+      
+    }
+    return zombie.isTouchingBox;
   }
 }
 

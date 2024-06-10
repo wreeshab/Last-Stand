@@ -21,8 +21,11 @@ class ZombieBasic {
     this.direction = originalDirection;
     this.hitpoints = health;
     this.preloadImages();
+    //this is for player
     this.attackingGap = 1500;
     this.lastAttackTime = null;
+    this.isTouchingBox = false;
+    this.setAnimation("Walk")
   }
 
   preloadImages() {
@@ -85,29 +88,28 @@ class ZombieBasic {
   resolveZombieBulletCollision(bullets) {
     let collisionDetected = false;
     for (let i = bullets.length - 1; i >= 0; i--) {
-        const bullet = bullets[i];
-        if (
-            bullet.position.x + bullet.radius > this.position.x &&
-            bullet.position.x - bullet.radius < this.position.x + this.width &&
-            bullet.position.y + bullet.radius > this.position.y - this.height &&
-            bullet.position.y - bullet.radius < this.position.y &&
-            this.dead === false
-        ) {
-            console.log("Collision detected!");
-            this.zombieIsTakingDamage(bullet.damage);
+      const bullet = bullets[i];
+      if (
+        bullet.position.x + bullet.radius > this.position.x &&
+        bullet.position.x - bullet.radius < this.position.x + this.width &&
+        bullet.position.y + bullet.radius > this.position.y - this.height &&
+        bullet.position.y - bullet.radius < this.position.y &&
+        this.dead === false
+      ) {
+        console.log("Collision detected!");
+        this.zombieIsTakingDamage(bullet.damage);
 
-            bullets.splice(i, 1); // Remove bullet from array
-            collisionDetected = true; // Set collision flag to true
-        }
+        bullets.splice(i, 1);
+        collisionDetected = true;
+      }
     }
-    return collisionDetected; // Return true if collision detected
-}
-
+    return collisionDetected;
+  }
 
   zombieIsTakingDamage(damage) {
     this.hitpoints -= damage;
-    if(this.hitpoints <= 30 ){
-      this.zombieHitPointsBar.color = "red"
+    if (this.hitpoints <= 30) {
+      this.zombieHitPointsBar.color = "red";
     }
     if (this.hitpoints <= 0) {
       this.dead = true;
@@ -129,7 +131,7 @@ class ZombieBasic {
           this.position.x + this.width / 2,
           this.position.y - this.height / 2
         );
-        ctx.scale(-1, 1); // Flip horizontally
+        ctx.scale(-1, 1);
         ctx.translate(
           -this.position.x - this.width / 2,
           -this.position.y + this.height / 2
@@ -164,39 +166,45 @@ class ZombieBasic {
     this.zombieHitPointsBar.render();
   }
 
-  collisionBeteenZombieAndPlayer(player){
-    this.timeNowForZombiePlayer = new Date()
-    if(this.position.x + this.width > player.position.x && this.position.x < player.position.x + player.width && this.position.y - this.height < player.position.y + player.height && this.position.y > player.position.y){
-      console.log("collision between zombie and player")
-      if( this.timeNowForZombiePlayer - this.lastAttackTime > this.attackingGap){
+  collisionBeteenZombieAndPlayer(player) {
+    this.timeNowForZombiePlayer = new Date();
+    if (
+      this.position.x + this.width > player.position.x &&
+      this.position.x < player.position.x + player.width &&
+      this.position.y - this.height < player.position.y + player.height &&
+      this.position.y > player.position.y
+    ) {
+      console.log("collision between zombie and player");
+      if (
+        this.timeNowForZombiePlayer - this.lastAttackTime >
+        this.attackingGap
+      ) {
         this.lastAttackTime = this.timeNowForZombiePlayer;
         player.playerGettingDamage(6);
-        console.log("player getting damage")
+        console.log("player getting damage");
       }
     }
   }
 
-
-
   update() {
-    if (!this.isZombieTouchingBox && this.velocity.x != 0) {
-      // Move the zombie
-      if (this.direction === "left") {
-        this.velocity.x = -1;
-      } else {
-        this.velocity.x = 1;
-      }
-      this.position.x += this.velocity.x;
-
-      this.setAnimation("Walk");
-    } else if(this.velocity == 0 && this.dead == false) {
-      this.setAnimation("Attack");
-    } else if(this.velocity == 0 && this.dead == true) {
-      this.setAnimation("Death");
+    
+    if (this.direction === "left") {
+      this.velocity.x = -1;
     } else {
-      // this.setAnimation("Idle");
+      this.velocity.x = 1;
     }
+    this.position.x += this.velocity.x;
+    // this.setAnimation("Walk");
 
+    // if (this.dead) {
+    //   this.setAnimation("Dead");
+    // } else if (this.isTouchingBox && this.dead == false) {
+    //   this.setAnimation("Attack");
+    // } else if (this.velocity == 0 && this.dead == true) {
+    //   this.setAnimation("Dead");
+    // } else {
+    //   this.setAnimation("Walk");
+    // }
 
     this.updateFrameForZombie();
     this.zombieHitPointsBar.update(this.hitpoints);

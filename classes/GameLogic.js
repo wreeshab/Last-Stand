@@ -7,6 +7,10 @@ class GameLogic {
     this.boxes = boxes;
     this.lastSpawn = Date.now();
     this.zombieToMoveAfterBox = [];
+
+    //this is for boxx
+    
+    this.lastHitByZombieToBoxGap = 1500;
   }
 
   spawnZombies() {
@@ -69,25 +73,46 @@ class GameLogic {
       if (zombie.resolveZombieBulletCollision(this.player.bullets)) {
         if (zombie.isZombieDead()) {
           zombie.velocity.x = 0;
-          new Promise((resolve) => {
-            zombie.setAnimation("Dead");
-            setTimeout(resolve, 1300); //this value = 1300 is finalised after a lot of trail and error, edit even if need be. :)
-          }).then(() => {
+          // zombie.setAnimation("Dead");
+          // zombie.update()
+            // zombie.update()
             this.zombies.splice(this.zombies.indexOf(zombie), 1);
-          });
+          
         }
       }
     });
+    this.zombieToMoveAfterBox = []; 
+
+    this.zombies.forEach((zombie) => {
+      this.timeNowForBoxZombie = new Date()
+      for(let i = this.boxes.length - 1; i >= 0; i--){
+        if(this.boxes[i].collisionBetweenBoxAndZombie(zombie)){
+          if(zombie.isTouchingBox) this.zombieToMoveAfterBox.push(zombie)
+          if(this.timeNowForBoxZombie - this.boxes[i].lastHitByZombieToBox > this.lastHitByZombieToBoxGap){
+            this.boxes[i].takeDamageBox(10)
+            zombie.setAnimation("Attack")
+            
+            this.boxes[i].lastHitByZombieToBox = timeNow;
+            if(this.boxes[i].boxIsDestroyed()){
+              this.boxes.splice(i,1)
+              zombie.isTouchingBox = false
+              this.zombieToMoveAfterBox.forEach(zombie => {
+                zombie.setAnimation("Walk")
+              })
+            }
+          }
+        }
+      }
+    })
+  
     this.zombies.forEach((zombie,index) =>{
       zombie.collisionBeteenZombieAndPlayer(this.player)
     })
 
+    this.zombies.forEach(zombie => {
+      
+       zombie.update()
+    })
 
-
-
-
-    this.zombies.forEach((zombie) => {
-      zombie.update();
-    });
   }
 }
