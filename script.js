@@ -3,8 +3,8 @@ const ctx = canvas.getContext("2d");
 
 const pauseButton = document.getElementById("pause");
 const gameOverPopup = document.getElementById("game-over-pop");
-
-
+const restartButton = document.getElementById("restart");
+const playAgainButton = document.getElementById("play-again");
 
 canvas.width = 1408;
 canvas.height = 792;
@@ -218,9 +218,7 @@ function collisionBetweenPlayerAndPlatform(player, platform) {
   }
 }
 
-
-const gameLogic = new GameLogic({ player, boxes, gameOver});
-
+const gameLogic = new GameLogic({ player, boxes, gameOver });
 
 function pauseGame() {
   gamePaused = !gamePaused;
@@ -231,6 +229,9 @@ function pauseGame() {
     pauseButton.innerHTML = "Pause";
     mainGameLoop();
   }
+}
+function resetGame() {
+  document.location.reload();
 }
 
 function gameOverFunction() {
@@ -264,3 +265,5 @@ function mainGameLoop() {
 mainGameLoop();
 
 pauseButton.addEventListener("click", pauseGame);
+restartButton.addEventListener("click", resetGame);
+playAgainButton.addEventListener("click", resetGame);

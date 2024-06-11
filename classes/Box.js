@@ -82,3 +82,5 @@ class BottomPlatform {
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 }
+
+
