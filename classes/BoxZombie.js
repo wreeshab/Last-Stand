@@ -30,6 +30,7 @@ class BoxZombie {
       this.setAnimation("Walk")
       this.player = player;
       this.namee = "boxZombie";
+      this.isAttacking = false;
       
     }
   
@@ -185,18 +186,20 @@ class BoxZombie {
         ) {
           this.lastAttackTime = this.timeNowForZombiePlayer;
           player.playerGettingDamage(6);
+          this.isAttacking = true;
           console.log("player getting damage");
+        }else{
+          this.isAttacking = false;
         }
+        return true;
       }
     }
   
     update() {
       if(this.player.position.x > this.position.x && this.direction === "left"){
         this.direction = "right";
-        this.setAnimation("Walk");
       }else if(this.player.position.x < this.position.x && this.direction === "right"){
         this.direction = "left";
-        this.setAnimation("Walk");
         }
         if (this.direction === "left") {
         this.velocity.x = -1;

@@ -9,6 +9,8 @@ class GameLogic {
     this.zombieToMoveAfterBox = [];
     this.updateScore(0);
     this.currentScore = 0;
+    document.getElementById("current-score-value").innerHTML =
+      this.currentScore;
     this.highScore = 0;
     this.typesOfZombies = ["ZombieBasic", "BoxZombie"];
     this.waveNumber = 1;
@@ -161,32 +163,33 @@ class GameLogic {
           // zombie.update()
           // zombie.update()
           this.zombies.splice(this.zombies.indexOf(zombie), 1);
-          this.updateScore(10);
+          if (zombie.namee === "zombieBasic") {
+            this.updateScore(10);
+          } else if (zombie.namee === "boxZombie") {
+            this.updateScore(20);
+          }
         }
       }
     });
-    this.zombieToMoveAfterBox = [];
 
     this.zombies.forEach((zombie) => {
-      console.log(zombie.namee)
       if (zombie.namee === "zombieBasic") {
         this.timeNowForBoxZombie = new Date();
         for (let i = this.boxes.length - 1; i >= 0; i--) {
           if (this.boxes[i].collisionBetweenBoxAndZombie(zombie)) {
-            if (zombie.isTouchingBox) this.zombieToMoveAfterBox.push(zombie);
+            zombie.setAnimation("Attack");
             if (
               this.timeNowForBoxZombie - this.boxes[i].lastHitByZombieToBox >
               this.lastHitByZombieToBoxGap
             ) {
+              
+              console.log(zombie.isAttacking);
               this.boxes[i].takeDamageBox(10);
-              zombie.setAnimation("Attack");
-
               this.boxes[i].lastHitByZombieToBox = timeNow;
               if (this.boxes[i].boxIsDestroyed()) {
                 this.boxes.splice(i, 1);
-                zombie.isTouchingBox = false;
-                this.zombieToMoveAfterBox.forEach((zombie) => {
-                  zombie.setAnimation("Walk");
+                this.zombies.forEach((zombie) => {
+                  zombie.setAnimation("Walk")
                 });
               }
             }
@@ -196,7 +199,13 @@ class GameLogic {
     });
 
     this.zombies.forEach((zombie, index) => {
-      zombie.collisionBeteenZombieAndPlayer(this.player);
+      if (zombie.collisionBeteenZombieAndPlayer(this.player)) {
+        if (zombie.isAttacking) {
+          zombie.setAnimation("Attack");
+        } else {
+          zombie.setAnimation("Walk");
+        }
+      }
     });
 
     this.zombies.forEach((zombie) => {

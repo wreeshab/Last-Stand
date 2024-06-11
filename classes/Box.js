@@ -51,8 +51,7 @@ class Box {
     ) {
       zombie.position.x = this.position.x + this.width + .01;
       // zombie.velocity.x = 0;
-      zombie.isTouchingBox = true;
-      zombie.setAnimation("Attack")
+      zombie.isAttacking = true;
     }else if(
       this.position.x < zombie.position.x + zombie.width &&
       this.position.x + this.width > zombie.position.x &&
@@ -60,14 +59,11 @@ class Box {
     ){
       zombie.position.x = this.position.x - zombie.width - .01;
       // zombie.velocity.x = 0;
-      zombie.isTouchingBox = true;
-      zombie.setAnimation("Attack")
+      zombie.isAttacking = true;
     }else{
-      zombie.isTouchingBox = false;
-      
-      
+      zombie.isAttacking = false;
     }
-    return zombie.isTouchingBox;
+    return zombie.isAttacking;
   }
 }
 
