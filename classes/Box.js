@@ -43,6 +43,7 @@ class Box {
     return this.hitpoints <= 0;
   }
   collisionBetweenBoxAndZombie(zombie) {
+    if(zombie.namee === "boxZombie") return false;
     if (
       this.position.x < zombie.position.x + zombie.width &&
       this.position.x + this.width > zombie.position.x &&

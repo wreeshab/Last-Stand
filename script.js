@@ -251,15 +251,16 @@ function mainGameLoop() {
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
   player.update();
+
+  
+  gameLogic.update();
   boxes.forEach((box) => {
     box.draw();
     collisionBetweenPlayerAndPlatform(player, box);
   });
-  bottomPlatform.draw("transparent");
-  gameLogic.update();
 
   collisionBetweenPlayerAndPlatform(player, bottomPlatform);
-
+  bottomPlatform.draw("transparent");
   requestAnimationFrame(mainGameLoop);
 }
 mainGameLoop();

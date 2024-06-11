@@ -29,6 +29,7 @@ class ZombieBasic {
     this.isTouchingBox = false;
     this.setAnimation("Walk")
     this.player = player;
+    this.namee = "zombieBasic"
  
     
   }
