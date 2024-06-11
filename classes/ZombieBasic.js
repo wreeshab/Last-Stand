@@ -5,6 +5,7 @@ class ZombieBasic {
     health,
     animations,
     originalDirection,
+    player
   }) {
     this.position = placeOfSpawn;
     this.velocity = velocity;
@@ -26,6 +27,8 @@ class ZombieBasic {
     this.lastAttackTime = null;
     this.isTouchingBox = false;
     this.setAnimation("Walk")
+    this.player = player;
+    
   }
 
   preloadImages() {
@@ -187,8 +190,14 @@ class ZombieBasic {
   }
 
   update() {
-    
-    if (this.direction === "left") {
+    if(this.player.position.x > this.position.x && this.direction === "left"){
+      this.direction = "right";
+      this.setAnimation("Walk");
+    }else if(this.player.position.x < this.position.x && this.direction === "right"){
+      this.direction = "left";
+      this.setAnimation("Walk");
+      }
+      if (this.direction === "left") {
       this.velocity.x = -1;
     } else {
       this.velocity.x = 1;
@@ -208,7 +217,7 @@ class ZombieBasic {
 
     this.updateFrameForZombie();
     this.zombieHitPointsBar.update(this.hitpoints);
-
-    this.draw();
-  }
+    
+  this.draw();
+    }
 }

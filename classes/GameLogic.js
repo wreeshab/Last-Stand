@@ -60,6 +60,7 @@ class GameLogic {
           },
         },
         originalDirection: direction,
+        player : this.player,
       })
     );
   }

@@ -1,8 +1,12 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+const pauseButton =  document.getElementById("pause");
+
 canvas.width = 1408;
 canvas.height = 792;
+
+let gamePaused = false;
 
 const gravity = 0.5;
 
@@ -200,7 +204,23 @@ function collisionBetweenPlayerAndPlatform(player, platform) {
 
 const gameLogic = new GameLogic({player, boxes, })
 
+
+function pauseGame(){
+  gamePaused = !gamePaused;
+  if (gamePaused) {
+    pauseButton.innerHTML = "Resume";
+    cancelAnimationFrame(mainGameLoop);
+  } else {
+    pauseButton.innerHTML = "Pause";
+    mainGameLoop();
+  }
+}
+
+
 function mainGameLoop() {
+  if (gamePaused) {
+    return;
+  }
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
@@ -217,3 +237,6 @@ function mainGameLoop() {
   requestAnimationFrame(mainGameLoop);
 }
 mainGameLoop();
+
+
+pauseButton.addEventListener("click", pauseGame);

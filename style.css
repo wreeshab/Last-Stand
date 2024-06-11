@@ -10,20 +10,24 @@ body {
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, rgb(12, 12, 51), rgb(83, 80, 80));
+  background-size: cover;
+  background-repeat: no-repeat;
+  
 }
 #canvas {
   height: 792px;
   width: 1408px;
-  border: 5px ridge rgb(86, 17, 17);
+  border: 5px ridge rgb(255, 255, 255);
   background-color: aliceblue;
   scale: .9;
 }
 #inventory{
   display: flex;
-  width: 500px;
-  height: 50px;
-  background-color: blue;
+  width: 600px;
+  height: 60px;
+  background-color: rgb(148, 90, 104);
+  
 }
 #control-panel{
   display: flex;
@@ -31,4 +35,50 @@ body {
   align-items: center;
   gap: 20px;
   
+}
+#inventory{
+  border-width:5px ;
+  border: 5px solid black;
+}
+#inventory div img{
+  width: 60px;
+  height: 60px;
+  user-select: none;
+  padding: 3px;
+  border: 5px solid rgb(0, 0, 0);
+}
+
+.selected{
+  background-color: #fdfdff;
+}
+
+button {
+  width: 120px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  margin: 15px;
+  padding: 15px 30px;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-decoration: none;
+  color: #fdfdff;
+  background: transparent;
+  cursor: pointer;
+  transition: ease-out 0.5s;
+  border: 2px solid #623bec;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 0 rgb(12, 12, 51);
+}
+
+button:hover {
+  color: white;
+  box-shadow: inset 0 -100px 0 0 rgb(12, 12, 51);
+}
+
+button:active {
+  transform: scale(0.9);
 }
