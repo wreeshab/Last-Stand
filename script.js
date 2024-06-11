@@ -1,12 +1,17 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const pauseButton =  document.getElementById("pause");
+const pauseButton = document.getElementById("pause");
+const gameOverPopup = document.getElementById("game-over-pop");
+const highScoreValue = document.getElementById("#high-score-value");
+const scoreValue = document.getElementById("#score-value");
+
 
 canvas.width = 1408;
 canvas.height = 792;
 
 let gamePaused = false;
+let gameOver = false;
 
 const gravity = 0.5;
 
@@ -78,24 +83,27 @@ const player = new Player({
   enlargementRatio: 2.7,
   frameBuffer: 6,
   gunImageSrc: "./assets/guns/6.png",
-  animations : {
-    Idle : {
-      imageSrc : "./assets/hero1/Biker_idle.png",
-      frameRate : 4,
-      frameBuffer : 6,
-    
+  animations: {
+    Idle: {
+      imageSrc: "./assets/hero1/Biker_idle.png",
+      frameRate: 4,
+      frameBuffer: 6,
     },
     Run: {
       imageSrc: "./assets/hero1/Biker_run_right.png",
-      frameRate : 6,
-      frameBuffer : 6,
+      frameRate: 6,
+      frameBuffer: 6,
     },
-    Jump:{
+    Jump: {
       imageSrc: "./assets/hero1/Biker_jump.png",
-      frameRate : 4,
-      frameBuffer : 15,
-    
-    }
+      frameRate: 4,
+      frameBuffer: 15,
+    },
+    Dead: {
+      imageSrc: "./assets/hero1/Biker_death.png",
+      frameRate: 6,
+      frameBuffer: 15,
+    },
   },
   boxes,
 });
@@ -172,7 +180,11 @@ function collisionBetweenPlayerAndPlatform(player, platform) {
     playerLeft < platformRight &&
     player.velocity.y >= 0
   ) {
-    player.position.y = platformTop - player.actualBox.height - (player.actualBox.position.y - player.position.y) - 0.1;
+    player.position.y =
+      platformTop -
+      player.actualBox.height -
+      (player.actualBox.position.y - player.position.y) -
+      0.1;
     player.velocity.y = 0;
     player.isOnGround = true;
   }
@@ -185,7 +197,11 @@ function collisionBetweenPlayerAndPlatform(player, platform) {
     playerTop < platformBottom - 1 &&
     player.velocity.x > 0
   ) {
-    player.position.x = platformLeft - player.actualBox.width - (player.actualBox.position.x - player.position.x) - 0.1;
+    player.position.x =
+      platformLeft -
+      player.actualBox.width -
+      (player.actualBox.position.x - player.position.x) -
+      0.1;
     player.velocity.x = 0;
   }
 
@@ -197,15 +213,17 @@ function collisionBetweenPlayerAndPlatform(player, platform) {
     playerTop < platformBottom - 1 &&
     player.velocity.x < 0
   ) {
-    player.position.x = platformRight - (player.actualBox.position.x - player.position.x) + 0.1;
+    player.position.x =
+      platformRight - (player.actualBox.position.x - player.position.x) + 0.1;
     player.velocity.x = 0;
   }
 }
 
-const gameLogic = new GameLogic({player, boxes, })
+
+const gameLogic = new GameLogic({ player, boxes, gameOver});
 
 
-function pauseGame(){
+function pauseGame() {
   gamePaused = !gamePaused;
   if (gamePaused) {
     pauseButton.innerHTML = "Resume";
@@ -216,9 +234,17 @@ function pauseGame(){
   }
 }
 
+function gameOverFunction() {
+  cancelAnimationFrame(mainGameLoop);
+  gameOverPopup.style.visibility = "visible";
+}
 
 function mainGameLoop() {
   if (gamePaused) {
+    return;
+  }
+  if (player.playerIsDead()) {
+    gameOverFunction();
     return;
   }
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -237,6 +263,5 @@ function mainGameLoop() {
   requestAnimationFrame(mainGameLoop);
 }
 mainGameLoop();
-
 
 pauseButton.addEventListener("click", pauseGame);

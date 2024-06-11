@@ -5,7 +5,8 @@ class ZombieBasic {
     health,
     animations,
     originalDirection,
-    player
+    player,
+
   }) {
     this.position = placeOfSpawn;
     this.velocity = velocity;
@@ -28,6 +29,7 @@ class ZombieBasic {
     this.isTouchingBox = false;
     this.setAnimation("Walk")
     this.player = player;
+ 
     
   }
 
@@ -101,7 +103,6 @@ class ZombieBasic {
       ) {
         console.log("Collision detected!");
         this.zombieIsTakingDamage(bullet.damage);
-
         bullets.splice(i, 1);
         collisionDetected = true;
       }

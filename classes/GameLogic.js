@@ -1,5 +1,5 @@
 class GameLogic {
-  constructor({ player, boxes }) {
+  constructor({ player, boxes , gameOver }) {
     this.zombies = [];
     this.waveNumber = 1;
     this.spawningGap = 5000;
@@ -7,6 +7,7 @@ class GameLogic {
     this.boxes = boxes;
     this.lastSpawn = Date.now();
     this.zombieToMoveAfterBox = [];
+
 
     //this is for boxx
     
@@ -61,10 +62,16 @@ class GameLogic {
         },
         originalDirection: direction,
         player : this.player,
+
       })
     );
   }
   update() {
+
+    if(this.player.playerIsDead()){
+      this.gameOver = true;
+      return;
+    }
     const timeNow = Date.now();
     if (timeNow - this.lastSpawn > this.spawningGap) {
       this.spawnZombies();

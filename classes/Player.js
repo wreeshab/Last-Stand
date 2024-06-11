@@ -148,11 +148,20 @@ class Player extends Sprite {
   playerGettingDamage(damage) {
     this.hitpoints -= damage;
     if (this.hitpoints <= 0) {
+      this.hitpoints = 0;
+      this.hitPointsBar.update(this.hitpoints);
       this.dead = true;
     }
-    if(this.hitpoints <= 35){
-      this.hitPointsBar.color = "red"
+    if (this.hitpoints <= 35) {
+      this.hitPointsBar.color = "red";
     }
+  }
+  
+  playerIsDead() {
+    if (this.dead) {
+      return true;
+    }
+    return false;
   }
 
   draw() {
