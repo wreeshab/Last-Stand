@@ -3,8 +3,7 @@ const ctx = canvas.getContext("2d");
 
 const pauseButton = document.getElementById("pause");
 const gameOverPopup = document.getElementById("game-over-pop");
-const highScoreValue = document.getElementById("#high-score-value");
-const scoreValue = document.getElementById("#score-value");
+
 
 
 canvas.width = 1408;

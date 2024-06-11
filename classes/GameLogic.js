@@ -1,5 +1,5 @@
 class GameLogic {
-  constructor({ player, boxes , gameOver }) {
+  constructor({ player, boxes, gameOver }) {
     this.zombies = [];
     this.waveNumber = 1;
     this.spawningGap = 5000;
@@ -7,10 +7,12 @@ class GameLogic {
     this.boxes = boxes;
     this.lastSpawn = Date.now();
     this.zombieToMoveAfterBox = [];
-
+    this.updateScore(0)
+    this.currentScore = 0;
+    this.highScore = 0;
 
     //this is for boxx
-    
+
     this.lastHitByZombieToBoxGap = 1500;
   }
 
@@ -61,14 +63,24 @@ class GameLogic {
           },
         },
         originalDirection: direction,
-        player : this.player,
-
+        player: this.player,
       })
     );
   }
-  update() {
 
-    if(this.player.playerIsDead()){
+  updateScore(x) {
+    this.currentScore += x;
+    this.highScore = localStorage.getItem("highScore");
+    if (this.currentScore > this.highScore) {
+      this.highScore = this.currentScore;
+      localStorage.setItem("highScore", this.highScore);
+    }
+    document.getElementById("high-score-value").innerHTML = this.highScore;
+    document.getElementById("current-score-value").innerHTML = this.currentScore;
+    
+  }
+  update() {
+    if (this.player.playerIsDead()) {
       this.gameOver = true;
       return;
     }
@@ -83,44 +95,45 @@ class GameLogic {
           zombie.velocity.x = 0;
           // zombie.setAnimation("Dead");
           // zombie.update()
-            // zombie.update()
-            this.zombies.splice(this.zombies.indexOf(zombie), 1);
-          
+          // zombie.update()
+          this.zombies.splice(this.zombies.indexOf(zombie), 1);
+          this.updateScore(10)
         }
       }
     });
-    this.zombieToMoveAfterBox = []; 
+    this.zombieToMoveAfterBox = [];
 
     this.zombies.forEach((zombie) => {
-      this.timeNowForBoxZombie = new Date()
-      for(let i = this.boxes.length - 1; i >= 0; i--){
-        if(this.boxes[i].collisionBetweenBoxAndZombie(zombie)){
-          if(zombie.isTouchingBox) this.zombieToMoveAfterBox.push(zombie)
-          if(this.timeNowForBoxZombie - this.boxes[i].lastHitByZombieToBox > this.lastHitByZombieToBoxGap){
-            this.boxes[i].takeDamageBox(10)
-            zombie.setAnimation("Attack")
-            
+      this.timeNowForBoxZombie = new Date();
+      for (let i = this.boxes.length - 1; i >= 0; i--) {
+        if (this.boxes[i].collisionBetweenBoxAndZombie(zombie)) {
+          if (zombie.isTouchingBox) this.zombieToMoveAfterBox.push(zombie);
+          if (
+            this.timeNowForBoxZombie - this.boxes[i].lastHitByZombieToBox >
+            this.lastHitByZombieToBoxGap
+          ) {
+            this.boxes[i].takeDamageBox(10);
+            zombie.setAnimation("Attack");
+
             this.boxes[i].lastHitByZombieToBox = timeNow;
-            if(this.boxes[i].boxIsDestroyed()){
-              this.boxes.splice(i,1)
-              zombie.isTouchingBox = false
-              this.zombieToMoveAfterBox.forEach(zombie => {
-                zombie.setAnimation("Walk")
-              })
+            if (this.boxes[i].boxIsDestroyed()) {
+              this.boxes.splice(i, 1);
+              zombie.isTouchingBox = false;
+              this.zombieToMoveAfterBox.forEach((zombie) => {
+                zombie.setAnimation("Walk");
+              });
             }
           }
         }
       }
-    })
-  
-    this.zombies.forEach((zombie,index) =>{
-      zombie.collisionBeteenZombieAndPlayer(this.player)
-    })
+    });
 
-    this.zombies.forEach(zombie => {
-      
-       zombie.update()
-    })
+    this.zombies.forEach((zombie, index) => {
+      zombie.collisionBeteenZombieAndPlayer(this.player);
+    });
 
+    this.zombies.forEach((zombie) => {
+      zombie.update();
+    });
   }
 }
