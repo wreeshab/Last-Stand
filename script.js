@@ -82,6 +82,34 @@ const player = new Player({
   enlargementRatio: 2.7,
   frameBuffer: 6,
   gunImageSrc: "./assets/guns/6.png",
+  guns: [
+    new Gun({
+      name: "Normalgun",
+      bulletVelocity: 20,
+      fireRate: 5,
+      damage: 10,
+      recoil: 0,
+      imageSrc: "./assets/guns/Normalgun.png",
+    }),
+    new Gun({
+      //low range  but shoots 3 bullets moderate recoil
+      name: "Shotgun",
+      bulletVelocity: 15,
+      fireRate: 2,
+      damage: 25,
+      recoil: 0,
+      imageSrc: "./assets/guns/Shotgun.png",
+    }),
+    new Gun({
+      //high range high damage high recoil
+      name: "Rifle",
+      bulletVelocity: 40,
+      fireRate: 1,
+      damage: 50,
+      recoil: 0,
+      imageSrc: "./assets/guns/Rifle.png",
+    }),
+  ],
   animations: {
     Idle: {
       imageSrc: "./assets/hero1/Biker_idle.png",
@@ -107,33 +135,6 @@ const player = new Player({
   boxes,
 });
 
-document.addEventListener("keydown", (e) => {
-  switch (e.key) {
-    case "w":
-      keys.w.pressed = true;
-      break;
-    case "a":
-      keys.a.pressed = true;
-      break;
-    case "d":
-      keys.d.pressed = true;
-      break;
-  }
-});
-
-document.addEventListener("keyup", (e) => {
-  switch (e.key) {
-    case "w":
-      keys.w.pressed = false;
-      break;
-    case "a":
-      keys.a.pressed = false;
-      break;
-    case "d":
-      keys.d.pressed = false;
-      break;
-  }
-});
 
 function resolveVerticalCollision(player, platform) {
   const playerBottom = player.actualBox.position.y + player.actualBox.height;
@@ -259,7 +260,7 @@ function mainGameLoop() {
   player.update();
   // bat.update();
 
-  gameLogic.update();
+  // gameLogic.update();
   boxes.forEach((box) => {
     box.draw();
     collisionBetweenPlayerAndPlatform(player, box);

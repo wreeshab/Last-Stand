@@ -36,7 +36,7 @@ class Box {
 
   takeDamageBox(damage) {
     this.hitpoints -= damage;
-    console.log(this.hitpoints);
+    // console.log(this.hitpoints);
   }
 
   boxIsDestroyed() {

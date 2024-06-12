@@ -8,6 +8,7 @@ class Player extends Sprite {
     gunImageSrc,
     animations,
     boxes,
+    guns
   }) {
     super({ position, imageSrc, frameRate, enlargementRatio, frameBuffer });
     this.velocity = { x: 0, y: 0 };
@@ -25,6 +26,9 @@ class Player extends Sprite {
     this.gunAngle = 0;
 
     this.bullets = [];
+    this.guns = guns;
+    this.currentGun = 0;
+
     this.boxes = boxes;
 
     this.hitpoints = 100;
@@ -128,22 +132,56 @@ class Player extends Sprite {
     trajectory.draw();
   }
 
-  shootBullet() {
-    const bullet = new Bullet({
+  drawGun(){
+    this.guns[this.currentGun].draw(this);
+  }
+  shootBullet(){
+    const currentGun = this.guns[this.currentGun];
+    const bullet = new Bullet ({
       position: {
         x: this.actualBox.position.x + this.actualBox.width / 2,
         y: this.actualBox.position.y + this.actualBox.height / 2,
       },
-      velocity: {
+      velocity:{
         x: Math.cos(this.gunAngle) * 20,
         y: Math.sin(this.gunAngle) * 20,
       },
+      damage: currentGun.damage,
       bulletGravity: 0.65, //dont change this gravity value:(
       boxes: this.boxes,
       bullets: this.bullets,
-    });
+    })
     this.bullets.push(bullet);
+
+    // this.velocity.x -= Math.cos(this.gunAngle) * currentGun.recoil;
+    // this.velocity.y -= Math.sin(this.gunAngle) * currentGun.recoil;
+
   }
+
+  switchGun(index){1
+    if(this.currentGun === index) return;
+    if(index>=0 && index < this.guns.length){
+      this.currentGun = index;
+    }
+
+  }
+
+  // shootBullet() {
+  //   const bullet = new Bullet({
+  //     position: {
+  //       x: this.actualBox.position.x + this.actualBox.width / 2,
+  //       y: this.actualBox.position.y + this.actualBox.height / 2,
+  //     },
+  //     velocity: {
+  //       x: Math.cos(this.gunAngle) * 20,
+  //       y: Math.sin(this.gunAngle) * 20,
+  //     },
+  //     bulletGravity: 0.65, //dont change this gravity value:(
+  //     boxes: this.boxes,
+  //     bullets: this.bullets,
+  //   });
+  //   this.bullets.push(bullet);
+  // }
 
   playerGettingDamage(damage) {
     this.hitpoints -= damage;
@@ -196,7 +234,6 @@ class Player extends Sprite {
     super.update();
     this.updateActualBox();
     this.updateTrajectory();
-    // this.drawTrajectories();
     this.draw();
     this.drawGun();
     this.hitPointsBar.update(this.hitpoints);
@@ -207,7 +244,6 @@ class Player extends Sprite {
         this.bullets.splice(index, 1);
       }
     });
-    //here againn to put some visually pleasing looks the dots will be ath the back then the player then the gun in the very front
 
     this.velocity.y += gravity;
 

@@ -239,7 +239,7 @@ class GameLogic {
               this.timeNowForBoxZombie - this.boxes[i].lastHitByZombieToBox >
               this.lastHitByZombieToBoxGap
             ) {
-              console.log(zombie.isAttacking);
+              // console.log(zombie.isAttacking);
               this.boxes[i].takeDamageBox(10);
               this.boxes[i].lastHitByZombieToBox = timeNow;
               if (this.boxes[i].boxIsDestroyed()) {
