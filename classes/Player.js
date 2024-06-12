@@ -200,7 +200,27 @@ class Player extends Sprite {
       return;
     }
     this.lastShotTime = timeNowForShootBullet;
-    const currentGun = this.guns[this.currentGun];
+    if(this.currentGun === 1){
+      for(let i = 0; i < 5; i++){
+        const bullet = new Bullet({
+          position: {
+            x: this.actualBox.position.x + this.actualBox.width / 2,
+            y: this.actualBox.position.y + this.actualBox.height / 2,
+          },
+          velocity: {
+            x: Math.cos(this.gunAngle- Math.PI / 6 +  (Math.PI/12 * i)) * this.guns[this.currentGun].bulletVelocity,
+            y: Math.sin(this.gunAngle - Math.PI / 6 + (Math.PI/12 * i) ) * this.guns[this.currentGun].bulletVelocity,
+          },
+          damage: this.guns[this.currentGun].damage,
+          // bulletGravity: .65,
+          bulletGravity: this.guns[this.currentGun].bulletGravity,
+          boxes: this.boxes,
+          bullets: this.bullets,
+        });
+        this.bullets.push(bullet);
+      }
+    }else{
+
     const bullet = new Bullet({
       position: {
         x: this.actualBox.position.x + this.actualBox.width / 2,
@@ -217,6 +237,8 @@ class Player extends Sprite {
       bullets: this.bullets,
     });
     this.bullets.push(bullet);
+    }
+    
 
     //putting recoil
     this.position.x -=
