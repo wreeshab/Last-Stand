@@ -96,7 +96,7 @@ const player = new Player({
       //low range  but shoots 3 bullets moderate recoil
       name: "Shotgun",
       bulletVelocity: 15,
-      fireRate: 500, // 2 bullets per second
+      fireRate: 750, // 2 bullets per second
       damage: 25,
       recoil: 30,
       bulletGravity: 1,
@@ -106,7 +106,7 @@ const player = new Player({
       //high range high damage high recoil
       name: "Rifle",
       bulletVelocity: 30,
-      fireRate: 1000, //1 bullet per second
+      fireRate: 750, //1 bullet per second
       damage: 50,
       recoil: 50,
       bulletGravity: 0.5,
@@ -262,7 +262,7 @@ function mainGameLoop() {
   player.update();
   // bat.update();
 
-  // gameLogic.update();
+  gameLogic.update();
   boxes.forEach((box) => {
     box.draw();
     player.collisionBetweenPlayerAndPlatform(box);
