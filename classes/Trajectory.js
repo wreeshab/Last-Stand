@@ -10,8 +10,7 @@ class Trajectory {
   
     draw() {
       const timeStep = 0.05;
-      const maxTime = 3; // Adjusted for better visualization
-  
+      const maxTime = 2;  
       ctx.beginPath();
       ctx.moveTo(this.startX, this.startY);
   

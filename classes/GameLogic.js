@@ -1,5 +1,5 @@
 class GameLogic {
-  constructor({ player, boxes, gameOver }) {
+  constructor({ player, boxes }) {
     this.zombies = [];
     this.waveNumber = 1;
     this.spawningGap = 5000;
