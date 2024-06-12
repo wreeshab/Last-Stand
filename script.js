@@ -86,27 +86,30 @@ const player = new Player({
     new Gun({
       name: "Normalgun",
       bulletVelocity: 20,
-      fireRate: 5,
+      fireRate: 20, //50 bullet per second but its upto your skill
       damage: 10,
-      recoil: 0,
+      recoil: 10,
+      bulletGravity: 0.65,
       imageSrc: "./assets/guns/Normalgun.png",
     }),
     new Gun({
       //low range  but shoots 3 bullets moderate recoil
       name: "Shotgun",
       bulletVelocity: 15,
-      fireRate: 2,
+      fireRate: 500, // 2 bullets per second
       damage: 25,
-      recoil: 0,
+      recoil: 30,
+      bulletGravity: 1,
       imageSrc: "./assets/guns/Shotgun.png",
     }),
     new Gun({
       //high range high damage high recoil
       name: "Rifle",
-      bulletVelocity: 40,
-      fireRate: 1,
+      bulletVelocity: 30,
+      fireRate: 1000, //1 bullet per second
       damage: 50,
-      recoil: 0,
+      recoil: 50,
+      bulletGravity: 0.5,
       imageSrc: "./assets/guns/Rifle.png",
     }),
   ],
@@ -135,7 +138,6 @@ const player = new Player({
   boxes,
 });
 
-
 function resolveVerticalCollision(player, platform) {
   const playerBottom = player.actualBox.position.y + player.actualBox.height;
   const platformTop = platform.position.y;
@@ -162,62 +164,62 @@ function resolveVerticalCollision(player, platform) {
 
   return false;
 }
-function collisionBetweenPlayerAndPlatform(player, platform) {
-  const playerBottom = player.actualBox.position.y + player.actualBox.height;
-  const platformTop = platform.position.y;
-  const playerTop = player.actualBox.position.y;
-  const platformBottom = platform.position.y + platform.height;
-  const playerRight = player.actualBox.position.x + player.actualBox.width;
-  const platformRight = platform.position.x + platform.width;
-  const playerLeft = player.actualBox.position.x;
-  const platformLeft = platform.position.x;
 
-  // Bottom collision chking
-  if (
-    playerBottom >= platformTop &&
-    playerTop < platformTop &&
-    playerRight > platformLeft &&
-    playerLeft < platformRight &&
-    player.velocity.y >= 0
-  ) {
-    player.position.y =
-      platformTop -
-      player.actualBox.height -
-      (player.actualBox.position.y - player.position.y) -
-      0.1;
-    player.velocity.y = 0;
-    player.isOnGround = true;
-  }
+// function collisionBetweenPlayerAndPlatform(player, platform) {
+//   const playerBottom = player.actualBox.position.y + player.actualBox.height;
+//   const platformTop = platform.position.y;
+//   const playerTop = player.actualBox.position.y;
+//   const platformBottom = platform.position.y + platform.height;
+//   const playerRight = player.actualBox.position.x + player.actualBox.width;
+//   const platformRight = platform.position.x + platform.width;
+//   const playerLeft = player.actualBox.position.x;
+//   const platformLeft = platform.position.x;
+//   // Bottom collision chking
+//   if (
+//     playerBottom >= platformTop &&
+//     playerTop < platformTop &&
+//     playerRight > platformLeft &&
+//     playerLeft < platformRight &&
+//     player.velocity.y >= 0
+//   ) {
+//     player.position.y =
+//       platformTop -
+//       player.actualBox.height -
+//       (player.actualBox.position.y - player.position.y) -
+//       0.1;
+//     player.velocity.y = 0;
+//     player.isOnGround = true;
+//   }
 
-  // Left collision chking
-  if (
-    playerRight > platformLeft &&
-    playerLeft < platformLeft &&
-    playerBottom > platformTop + 1 &&
-    playerTop < platformBottom - 1 &&
-    player.velocity.x > 0
-  ) {
-    player.position.x =
-      platformLeft -
-      player.actualBox.width -
-      (player.actualBox.position.x - player.position.x) -
-      0.1;
-    player.velocity.x = 0;
-  }
+//   // Left collision chking
+//   if (
+//     playerRight > platformLeft &&
+//     playerLeft < platformLeft &&
+//     playerBottom > platformTop + 1 &&
+//     playerTop < platformBottom - 1 &&
+//     player.velocity.x > 0
+//   ) {
+//     player.position.x =
+//       platformLeft -
+//       player.actualBox.width -
+//       (player.actualBox.position.x - player.position.x) -
+//       0.1;
+//     player.velocity.x = 0;
+//   }
 
-  // Right collision chking
-  if (
-    playerLeft < platformRight &&
-    playerRight > platformRight &&
-    playerBottom > platformTop + 1 &&
-    playerTop < platformBottom - 1 &&
-    player.velocity.x < 0
-  ) {
-    player.position.x =
-      platformRight - (player.actualBox.position.x - player.position.x) + 0.1;
-    player.velocity.x = 0;
-  }
-}
+//   // Right collision chking
+//   if (
+//     playerLeft < platformRight &&
+//     playerRight > platformRight &&
+//     playerBottom > platformTop + 1 &&
+//     playerTop < platformBottom - 1 &&
+//     player.velocity.x < 0
+//   ) {
+//     player.position.x =
+//       platformRight - (player.actualBox.position.x - player.position.x) + 0.1;
+//     player.velocity.x = 0;
+//   }
+// }
 
 const gameLogic = new GameLogic({ player, boxes, gameOver });
 // const bat = new Bat({
@@ -263,13 +265,12 @@ function mainGameLoop() {
   // gameLogic.update();
   boxes.forEach((box) => {
     box.draw();
-    collisionBetweenPlayerAndPlatform(player, box);
+    player.collisionBetweenPlayerAndPlatform(box);
   });
 
-  collisionBetweenPlayerAndPlatform(player, bottomPlatform);
+  player.collisionBetweenPlayerAndPlatform(bottomPlatform);
   bottomPlatform.draw("transparent");
   // Update and draw the bat
-  
 
   requestAnimationFrame(mainGameLoop);
 }

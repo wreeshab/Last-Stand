@@ -32,6 +32,7 @@ class Bullet {
     }
   
     update() {
+      // console.log(this.bulletGravity)
       this.position.x += this.velocity.x;
       this.position.y += this.velocity.y;
       this.velocity.y +=  this.bulletGravity ;

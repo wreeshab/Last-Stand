@@ -8,7 +8,7 @@ class Player extends Sprite {
     gunImageSrc,
     animations,
     boxes,
-    guns
+    guns,
   }) {
     super({ position, imageSrc, frameRate, enlargementRatio, frameBuffer });
     this.velocity = { x: 0, y: 0 };
@@ -28,6 +28,8 @@ class Player extends Sprite {
     this.bullets = [];
     this.guns = guns;
     this.currentGun = 0;
+
+    this.lastShotTime = 0;
 
     this.boxes = boxes;
 
@@ -82,14 +84,68 @@ class Player extends Sprite {
       this.actualBox = {
         position: { x: this.position.x + 7, y: this.position.y + 30 },
         width: 60,
-        height: 100,
+        height: 95,
       };
     } else {
       this.actualBox = {
         position: { x: this.position.x + 65, y: this.position.y + 30 },
         width: 60,
-        height: 100,
+        height: 95,
       };
+    }
+  }
+  collisionBetweenPlayerAndPlatform(platform) {
+    const playerBottom = this.actualBox.position.y + this.actualBox.height;
+    const platformTop = platform.position.y;
+    const playerTop = this.actualBox.position.y;
+    const platformBottom = platform.position.y + platform.height;
+    const playerRight = this.actualBox.position.x + this.actualBox.width;
+    const platformRight = platform.position.x + platform.width;
+    const playerLeft = this.actualBox.position.x;
+    const platformLeft = platform.position.x;
+
+    // Bottom collision checking
+    if (
+      playerBottom >= platformTop &&
+      playerTop < platformTop &&
+      playerRight > platformLeft &&
+      playerLeft < platformRight &&
+      this.velocity.y >= 0
+    ) {
+      this.position.y =
+        platformTop -
+        this.actualBox.height -
+        (this.actualBox.position.y - this.position.y) 
+      this.velocity.y = 0;
+      this.isOnGround = true;
+    }
+
+    // Left collision checking
+    if (
+      playerRight > platformLeft &&
+      playerLeft < platformLeft &&
+      playerBottom > platformTop + 1 &&
+      playerTop < platformBottom - 1 
+      // this.velocity.x > 0
+    ) {
+      this.position.x =
+        platformLeft -
+        this.actualBox.width -
+        (this.actualBox.position.x - this.position.x) 
+      this.velocity.x = 0;
+    }
+
+    // Right collision checking
+    if (
+      playerLeft < platformRight &&
+      playerRight > platformRight &&
+      playerBottom > platformTop + 1 &&
+      playerTop < platformBottom - 1 
+      // this.velocity.x < 0
+    ) {
+      this.position.x =
+        platformRight - (this.actualBox.position.x - this.position.x) 
+      this.velocity.x = 0;
     }
   }
 
@@ -132,38 +188,54 @@ class Player extends Sprite {
     trajectory.draw();
   }
 
-  drawGun(){
+  drawGun() {
     this.guns[this.currentGun].draw(this);
   }
-  shootBullet(){
+  shootBullet() {
+    const timeNowForShootBullet = Date.now();
+    if (
+      timeNowForShootBullet - this.lastShotTime <
+      this.guns[this.currentGun].fireRate
+    ) {
+      return;
+    }
+    this.lastShotTime = timeNowForShootBullet;
     const currentGun = this.guns[this.currentGun];
-    const bullet = new Bullet ({
+    const bullet = new Bullet({
       position: {
         x: this.actualBox.position.x + this.actualBox.width / 2,
         y: this.actualBox.position.y + this.actualBox.height / 2,
       },
-      velocity:{
-        x: Math.cos(this.gunAngle) * 20,
-        y: Math.sin(this.gunAngle) * 20,
+      velocity: {
+        x: Math.cos(this.gunAngle) * this.guns[this.currentGun].bulletVelocity,
+        y: Math.sin(this.gunAngle) * this.guns[this.currentGun].bulletVelocity,
       },
-      damage: currentGun.damage,
-      bulletGravity: 0.65, //dont change this gravity value:(
+      damage: this.guns[this.currentGun].damage,
+      // bulletGravity: .65,
+      bulletGravity: this.guns[this.currentGun].bulletGravity,
       boxes: this.boxes,
       bullets: this.bullets,
-    })
+    });
     this.bullets.push(bullet);
 
-    // this.velocity.x -= Math.cos(this.gunAngle) * currentGun.recoil;
-    // this.velocity.y -= Math.sin(this.gunAngle) * currentGun.recoil;
-
+    //putting recoil
+    this.position.x -=
+      Math.cos(this.gunAngle) * this.guns[this.currentGun].recoil;
+    this.position.y -=
+      Math.sin(this.gunAngle) * this.guns[this.currentGun].recoil;
+    this.update()
+      this.updateActualBox()
+    this.boxes.forEach((box)=>{
+      this.collisionBetweenPlayerAndPlatform(box);
+    })
   }
 
-  switchGun(index){1
-    if(this.currentGun === index) return;
-    if(index>=0 && index < this.guns.length){
+  switchGun(index) {
+    1;
+    if (this.currentGun === index) return;
+    if (index >= 0 && index < this.guns.length) {
       this.currentGun = index;
     }
-
   }
 
   // shootBullet() {
@@ -194,7 +266,7 @@ class Player extends Sprite {
       this.hitPointsBar.color = "red";
     }
   }
-  
+
   playerIsDead() {
     if (this.dead) {
       return true;
@@ -233,7 +305,7 @@ class Player extends Sprite {
   update() {
     super.update();
     this.updateActualBox();
-    this.updateTrajectory();
+    // this.updateTrajectory();
     this.draw();
     this.drawGun();
     this.hitPointsBar.update(this.hitpoints);
@@ -244,6 +316,11 @@ class Player extends Sprite {
         this.bullets.splice(index, 1);
       }
     });
+
+    this.boxes.forEach((box)=>{
+      this.collisionBetweenPlayerAndPlatform(box)
+
+    })
 
     this.velocity.y += gravity;
 

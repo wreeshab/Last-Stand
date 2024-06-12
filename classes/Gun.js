@@ -1,12 +1,14 @@
 class Gun {
-  constructor({ name, bulletVelocity, fireRate, damage, imageSrc }) {
+  constructor({ name, bulletVelocity, fireRate, damage, imageSrc ,bulletGravity,recoil}) {
     this.name = name;
     this.bulletVelocity = bulletVelocity;
     this.fireRate = fireRate;
     this.damage = damage;
+    this.bulletGravity = bulletGravity;
     this.imageSrc = imageSrc;
     this.image = new Image();
     this.image.src = this.imageSrc;
+    this.recoil = recoil;
   }
   draw(player) {
     ctx.save();
