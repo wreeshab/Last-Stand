@@ -18,15 +18,70 @@ class GameLogic {
     //this is for boxx
 
     this.lastHitByZombieToBoxGap = 1500;
+    this.bats = [];
   }
 
   spawnZombies() {
     const random = Math.random();
-    if (random < 0.5) {
+    if (random < 0.3) {
       this.spawnZombieBasic();
-    } else if (random > 0.5) {
+    } else if (random > 0.3 && random < 0.6) {
       this.spawnBoxZombie();
+    } else if (random > 0.6) {
+      this.spawnBatZombie();
     }
+  }
+  spawnBatZombie() {
+    const side = Math.random() < 0.5 ? "left" : "right";
+    const placeOfSpawn =
+      side === "left"
+        ? { x: 0, y: canvas.height - 50 }
+        : { x: canvas.width, y: canvas.height - 50 };
+    const velocity = side === "left" ? { x: 1, y: 0 } : { x: -1, y: 0 };
+    const direction = velocity.x === 1 ? "right" : "left";
+    const health = 175;
+    this.zombies.push(
+      new BatZombie({
+        placeOfSpawn,
+        velocity,
+        health,
+        animations: {
+          Idle: {
+            imageSrc: "assets/zombies/Zombie3/animation/Idle1.png",
+            frameRate: 4,
+            frameBuffer: 8,
+          },
+          Run: {
+            imageSrc: "assets/zombies/Zombie3/animation/Run1.png",
+            frameRate: 10,
+            frameBuffer: 5,
+          },
+          Walk: {
+            imageSrc: "assets/zombies/Zombie3/animation/Walk1.png",
+            frameRate: 6,
+            frameBuffer: 5,
+          },
+          Jump: {
+            imageSrc: "assets/zombies/Zombie3/animation/Jump1.png",
+            frameRate: 7,
+            frameBuffer: 15,
+          },
+          Attack: {
+            imageSrc: "assets/zombies/Zombie3/animation/Attack1.png",
+            frameRate: 6,
+            frameBuffer: 6,
+          },
+          Dead: {
+            imageSrc: "assets/zombies/Zombie3/animation/Dead1.png",
+            frameRate: 8,
+            frameBuffer: 8,
+          },
+        },
+        originalDirection: direction,
+        player: this.player,
+        bats: this.bats,
+      })
+    );
   }
 
   spawnBoxZombie() {
@@ -167,13 +222,15 @@ class GameLogic {
             this.updateScore(10);
           } else if (zombie.namee === "boxZombie") {
             this.updateScore(20);
+          }else if(zombie.namee === "batZombie"){
+            this.updateScore(50);
           }
         }
       }
     });
 
     this.zombies.forEach((zombie) => {
-      if (zombie.namee === "zombieBasic") {
+      if (zombie.namee === "zombieBasic" || zombie.namee === "batZombie") {
         this.timeNowForBoxZombie = new Date();
         for (let i = this.boxes.length - 1; i >= 0; i--) {
           if (this.boxes[i].collisionBetweenBoxAndZombie(zombie)) {
@@ -182,14 +239,13 @@ class GameLogic {
               this.timeNowForBoxZombie - this.boxes[i].lastHitByZombieToBox >
               this.lastHitByZombieToBoxGap
             ) {
-              
               console.log(zombie.isAttacking);
               this.boxes[i].takeDamageBox(10);
               this.boxes[i].lastHitByZombieToBox = timeNow;
               if (this.boxes[i].boxIsDestroyed()) {
                 this.boxes.splice(i, 1);
                 this.zombies.forEach((zombie) => {
-                  zombie.setAnimation("Walk")
+                  zombie.setAnimation("Walk");
                 });
               }
             }
@@ -211,5 +267,12 @@ class GameLogic {
     this.zombies.forEach((zombie) => {
       zombie.update();
     });
+    for (let i = this.bats.length - 1; i >= 0; i--) {
+      if (this.bats[i].isDead) {
+       this.bats.splice(i, 1);
+      } else {
+        this.bats[i].update();
+      }
+    }
   }
 }

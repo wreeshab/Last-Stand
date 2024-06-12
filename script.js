@@ -219,6 +219,11 @@ function collisionBetweenPlayerAndPlatform(player, platform) {
 }
 
 const gameLogic = new GameLogic({ player, boxes, gameOver });
+// const bat = new Bat({
+//   position: { x: 500, y: 500 },
+//   velocity: { x: 0, y: 0 },
+//   player:player
+// });
 
 function pauseGame() {
   gamePaused = !gamePaused;
@@ -230,6 +235,7 @@ function pauseGame() {
     mainGameLoop();
   }
 }
+
 function resetGame() {
   document.location.reload();
 }
@@ -251,8 +257,8 @@ function mainGameLoop() {
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
   player.update();
+  // bat.update();
 
-  
   gameLogic.update();
   boxes.forEach((box) => {
     box.draw();
@@ -261,6 +267,9 @@ function mainGameLoop() {
 
   collisionBetweenPlayerAndPlatform(player, bottomPlatform);
   bottomPlatform.draw("transparent");
+  // Update and draw the bat
+  
+
   requestAnimationFrame(mainGameLoop);
 }
 mainGameLoop();
