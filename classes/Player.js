@@ -35,6 +35,8 @@ class Player extends Sprite {
 
     this.hitpoints = 100;
 
+    this.bulletShotForRecoil = false;
+
     const self = this;
     document.addEventListener("mousemove", function (e) {
       self.updateGunAngle(e);
@@ -125,8 +127,8 @@ class Player extends Sprite {
       playerRight > platformLeft &&
       playerLeft < platformLeft &&
       playerBottom > platformTop + 1 &&
-      playerTop < platformBottom - 1 
-      // this.velocity.x > 0
+      playerTop < platformBottom - 1 &&
+      this.velocity.x > 0
     ) {
       this.position.x =
         platformLeft -
@@ -140,8 +142,8 @@ class Player extends Sprite {
       playerLeft < platformRight &&
       playerRight > platformRight &&
       playerBottom > platformTop + 1 &&
-      playerTop < platformBottom - 1 
-      // this.velocity.x < 0
+      playerTop < platformBottom - 1 &&
+      this.velocity.x < 0
     ) {
       this.position.x =
         platformRight - (this.actualBox.position.x - this.position.x) 
@@ -240,12 +242,8 @@ class Player extends Sprite {
     }
     
 
-    //putting recoil
-    this.position.x -=
-      Math.cos(this.gunAngle) * this.guns[this.currentGun].recoil;
-    this.position.y -=
-      Math.sin(this.gunAngle) * this.guns[this.currentGun].recoil;
-    this.update()
+    // this.update()
+    this.bulletShotForRecoil = true;
       this.updateActualBox()
     this.boxes.forEach((box)=>{
       this.collisionBetweenPlayerAndPlatform(box);
@@ -355,10 +353,19 @@ class Player extends Sprite {
     ) {
       this.velocity.x = 5;
       this.isFacingRight = true;
-    } else if (!keys.a.pressed && !keys.d.pressed && keys.w.pressed) {
+    } else if (!keys.a.pressed || !keys.d.pressed || keys.w.pressed) {
       this.velocity.x = 0;
     } else {
       this.velocity.x = 0;
+    }
+    if(this.bulletShotForRecoil){
+      
+    //putting recoil
+    this.velocity.x -=
+    Math.cos(this.gunAngle) * this.guns[this.currentGun].recoil;
+  this.position.y -=
+    Math.sin(this.gunAngle) * this.guns[this.currentGun].recoil;
+      this.bulletShotForRecoil= false;
     }
 
     if (keys.w.pressed && this.isOnGround) {
