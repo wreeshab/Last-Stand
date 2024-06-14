@@ -103,6 +103,18 @@ button:active {
   font-size: 20px;
   font-weight: 700;
 }
+#wave {
+  color: rgb(195, 226, 21);
+  font-family: "MedievalSharp";
+  font-size: 20px;
+  font-weight: 700;
+}
+#prep-time {
+  color: rgb(195, 226, 21);;
+  font-family: "MedievalSharp";
+  font-size: 20px;
+  font-weight: 700;
+}
 
 #game-over-pop {
   position: absolute;
@@ -124,11 +136,11 @@ button:active {
   transition: opacity 0.5s ease-in-out;
 }
 
-#game-over-pop img{
+#game-over-pop img {
   width: 175px;
   height: 175px;
 }
-#game-over-pop p{
+#game-over-pop p {
   font-size: 24px;
   font-family: "MedievalSharp";
   color: rgb(255, 255, 255);

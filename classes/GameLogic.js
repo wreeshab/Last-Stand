@@ -2,7 +2,7 @@ class GameLogic {
   constructor({ player, boxes, bottomPlatform }) {
     this.zombies = [];
     this.waveNumber = 1;
-    this.spawningGap = 10000;
+    this.spawningGap = 1000;
     this.player = player;
     this.boxes = boxes;
     this.bottomPlatform = bottomPlatform;
@@ -31,9 +31,29 @@ class GameLogic {
     ];
     this.lastPowerUpSpawn = Date.now();
     this.powerUpSpawnGap = 8000;
+    this.zombiesToSpawn =5 ;
+    this.isPrepTime = false;
+    this.prepTimeDuration = 30000;
+    this.lastWaveEndTime = Date.now();
+  }
+
+  startWave() {
+    this.isPrepTime = false;
+    this.zombiesToSpawn = 5 + this.waveNumber - 1; //here im putting 5 zombies in the first round and then +1 for every next round
+    this.waveNumber++;
+    document.getElementById("wave-value").innerHTML = this.waveNumber;
+    
+  }
+
+  startPreparation() {
+    this.isPrepTime = true;
+    this.lastWaveEndTime = Date.now();
+    this.powerUps = [];
+  
   }
 
   spawnPowerUp() {
+    if (this.isPrepTime) return;
     const PowerUpType =
       this.powerUpTypes[Math.floor(Math.random() * this.powerUpTypes.length)];
     const powerUp = new PowerUpType();
@@ -41,12 +61,10 @@ class GameLogic {
   }
 
   updatePowerUps() {
-    
-    this.powerUps.forEach((powerUp,index) => {
+    this.powerUps.forEach((powerUp, index) => {
       powerUp.draw();
       powerUp.resolvePowerUpBoxCollision(this.boxes);
       powerUp.resolvePowerUpBoxCollision(this.bottomPlatform);
-      
 
       if (
         this.player.position.x < powerUp.position.x + 50 &&
@@ -62,11 +80,10 @@ class GameLogic {
         this.powerUps.splice(index, 1);
       }
     });
-
-    
   }
 
   spawnZombies() {
+    if (this.isPrepTime || this.zombiesToSpawn <= 0) return;
     const random = Math.random();
     if (random < 0.3) {
       this.spawnZombieBasic();
@@ -75,6 +92,7 @@ class GameLogic {
     } else if (random > 0.6) {
       this.spawnBatZombie();
     }
+    this.zombiesToSpawn--;
   }
   spawnBatZombie() {
     const side = Math.random() < 0.5 ? "left" : "right";
@@ -245,23 +263,18 @@ class GameLogic {
       this.currentScore;
     document.getElementById("final-score").innerHTML = this.currentScore;
   }
+
+  
   update() {
     if (this.player.playerIsDead()) {
       this.gameOver = true;
       return;
     }
-    const timeNow = Date.now();
-    if (timeNow - this.lastSpawn > this.spawningGap) {
-      this.spawnZombies();
-      this.lastSpawn = timeNow;
-    }
+    
 
-    if (timeNow - this.lastPowerUpSpawn > this.powerUpSpawnGap) {
-      this.spawnPowerUp();
-      this.lastPowerUpSpawn = timeNow;
-    }
+    
 
-    this.updatePowerUps();
+    
 
     this.zombies.forEach((zombie) => {
       if (zombie.resolveZombieBulletCollision(this.player.bullets)) {
@@ -281,7 +294,7 @@ class GameLogic {
         }
       }
     });
-
+    const timeNow = new Date(); 
     this.zombies.forEach((zombie) => {
       if (zombie.namee === "zombieBasic" || zombie.namee === "batZombie") {
         this.timeNowForBoxZombie = new Date();
@@ -327,5 +340,33 @@ class GameLogic {
         this.bats[i].update();
       }
     }
+
+    //wave management
+
+    const timeNowForWaves = Date.now();
+    if (this.isPrepTime) {
+      document.getElementById("prep-time-value").innerHTML =
+        Math.round((this.prepTimeDuration - (timeNowForWaves - this.lastWaveEndTime)) / 1000) 
+      if (timeNowForWaves - this.lastWaveEndTime > this.prepTimeDuration) {
+        this.startWave();
+      }
+      return; 
+    }
+    if (timeNowForWaves - this.lastPowerUpSpawn > this.powerUpSpawnGap) {
+      
+      this.spawnPowerUp();
+      this.lastPowerUpSpawn = timeNowForWaves;
+    }
+    this.updatePowerUps();
+   
+    if (timeNowForWaves - this.lastSpawn > this.spawningGap && this.zombiesToSpawn > 0 && !this.isPrepTime) {
+      
+      this.spawnZombies();
+      this.lastSpawn = timeNowForWaves;
+    }
+    if (this.zombies.length === 0 && this.zombiesToSpawn === 0) {
+      this.startPreparation();
+    }
+
   }
 }
