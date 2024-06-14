@@ -5,10 +5,10 @@ class BulletRain extends PowerUp {
   }
 
   applyPrp(player) {
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 55; i++) {
       const bullet = new Bullet({
         position: { x: Math.random() * canvas.width, y: 0 },
-        velocity: { x: 0, y: 1},
+        velocity: { x: (Math.random() * 2 + 1), y: Math.random() < 0.5 ? (Math.random() * 5+ 1):-(Math.random() * 5+ 1)},
 
         damage: player.guns[player.currentGun].damage,
         bulletGravity: 1,
