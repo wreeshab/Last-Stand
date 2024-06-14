@@ -43,5 +43,11 @@ document.addEventListener("keydown", (e) => {
       document.getElementsByClassName("active")[0].classList.remove("active")
       document.getElementById(player.guns[2].name).classList.add("active")
       break;
+    case "q":
+      gameLogic.placeBox();
+      break;
+    case "e":
+      gameLogic.placeMine();
+      break;
   }
 });

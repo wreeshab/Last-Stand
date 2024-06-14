@@ -20,11 +20,18 @@
         <div id="high-score">High Score: <span id="high-score-value">0</span></div>
     </div>
     <canvas id="canvas"></canvas>
+
+    
     <div id="control-panel">
+        <div id="place-box-container">
+            <button id="place-box"><img src="assets/crate.png" onclick="gameLogic.placeBox()" alt="">Press Q</button>
+            <button id="place-mine" onclick="gameLogic.placeMine()"><img src="assets/tnt.png" alt="">Press E</button>
+        </div>
+
         <div id="inventory">
-            <div id="Normalgun" class="active"><img src="assets/guns/Normalgun.png" alt=""></div>
-            <div id="Shotgun"><img src="assets/guns/Shotgun.png" alt=""></div>
-            <div id="Rifle"><img src="assets/guns/Rifle.png" alt=""></div>
+            <div id="Normalgun" class="active"><img src="assets/guns/Normalgun.png" alt=""> Press 1</div>
+            <div id="Shotgun"><img src="assets/guns/Shotgun.png" alt=""> Press 2</div>
+            <div id="Rifle"><img src="assets/guns/Rifle.png" alt=""> Press 3</div>
         </div>
 
         <div id="control-buttons">
@@ -52,6 +59,7 @@
 
     <script src="classes/Bullet.js"></script>
     <script src="classes/Gun.js"></script>
+    <script src="classes/Mine.js"></script>
     <script src="classes/HitpointsBar.js"></script>
     <script src="classes/Trajectory.js"></script>
     <script src="classes/Sprite.js"></script>

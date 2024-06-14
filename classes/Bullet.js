@@ -1,13 +1,12 @@
 class Bullet {
-    constructor({ position, velocity, bulletGravity,boxes,bullets,damage = 10 }) {
+    constructor({ position, velocity, bulletGravity,boxes,bullets,damage = 10 ,radius=9}) {
       this.position = position;
       this.velocity = velocity;
-      this.radius = 9;
+      this.radius = radius;
       this.bulletGravity = bulletGravity;
       this.boxes = boxes;
       this.bullets = bullets;
       this.damage = damage;
-      this.isPiercing = false;
            
     }
   

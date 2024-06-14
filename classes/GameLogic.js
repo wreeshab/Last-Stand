@@ -2,7 +2,7 @@ class GameLogic {
   constructor({ player, boxes, bottomPlatform }) {
     this.zombies = [];
     this.waveNumber = 1;
-    this.spawningGap = 1000;
+    this.spawningGap = 10000;
     this.player = player;
     this.boxes = boxes;
     this.bottomPlatform = bottomPlatform;
@@ -32,9 +32,16 @@ class GameLogic {
     this.lastPowerUpSpawn = Date.now();
     this.powerUpSpawnGap = 8000;
     this.zombiesToSpawn =5 ;
-    this.isPrepTime = false;
-    this.prepTimeDuration = 30000;
+    this.isPrepTime = true;
+    this.prepTimeDuration = 10000;
     this.lastWaveEndTime = Date.now();
+
+    this.mines = [];
+    this.numberOfMines = 3;
+    this.numberOfMinesPlaced = 0;
+
+    this.boxesPlaced = 0;
+    this.maximumBoxes = 2;
   }
 
   startWave() {
@@ -264,17 +271,35 @@ class GameLogic {
     document.getElementById("final-score").innerHTML = this.currentScore;
   }
 
+  placeMine(){
+    if(this.numberOfMinesPlaced >= this.numberOfMines ) return;
+     if(this.player.isOnGround && this.isPrepTime){
+      const mine = new Mine({player:this.player})
+      this.mines.push(mine)
+      this.numberOfMinesPlaced++
+    }
+
+  }
+
+  placeBox(){
+    if(this.boxesPlaced >= this.maximumBoxes) return;
+    if(this.player.isOnGround && this.isPrepTime){
+      const box = new Box({
+        position: { x: this.player.actualBox.position.x, y: this.player.actualBox.position.y },
+        width: 100,
+        height: 100,
+      })
+      this.boxes.push(box)
+      this.boxesPlaced++;
+    }
+  }
+
   
   update() {
     if (this.player.playerIsDead()) {
       this.gameOver = true;
       return;
     }
-    
-
-    
-
-    
 
     this.zombies.forEach((zombie) => {
       if (zombie.resolveZombieBulletCollision(this.player.bullets)) {
@@ -341,7 +366,18 @@ class GameLogic {
       }
     }
 
-    //wave management
+    this.mines.forEach((mine,index) => {
+      if(mine.detectZombieMineCollision(this.zombies)){
+        console.log("mines hit zombies")
+        this.mines.splice(index,1)
+      }
+      mine.update();
+    });
+
+
+    
+
+    //wave management dont go below this comment to code!!
 
     const timeNowForWaves = Date.now();
     if (this.isPrepTime) {
@@ -365,6 +401,8 @@ class GameLogic {
       this.lastSpawn = timeNowForWaves;
     }
     if (this.zombies.length === 0 && this.zombiesToSpawn === 0) {
+      this.numberOfMinesPlaced = 0;
+      this.boxesPlaced = 0;
       this.startPreparation();
     }
 
