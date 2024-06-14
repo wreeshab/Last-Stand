@@ -6,9 +6,13 @@ class RapidFire extends PowerUp {
   }
 
   applyPrp(player) {
-    player.fireRate /= 2;
+    player.guns.forEach(gun => {
+      gun.fireRate /= 3;
+    });
     setTimeout(() => {
-      player.fireRate *= 2;
+      player.guns.forEach(gun => {
+        gun.fireRate *= 3;
+      });
     }, this.duration);
   }
 }

@@ -11,7 +11,7 @@ class PowerUp {
       this.position.y += this.velocity.y;
     }
   
-    checkCollision(platforms) {
+    resolvePowerUpBoxCollision(platforms) {
       for (let platform of platforms) {
         if (
           this.position.x < platform.position.x + platform.width &&

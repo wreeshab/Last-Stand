@@ -7,11 +7,11 @@ class GunDamageInc extends PowerUp {
   
     applyPrp(player) {
       player.guns.forEach(gun => {
-        gun.damage *= 1.5;
+        gun.damage *= 2;
       });
       setTimeout(() => {
         player.guns.forEach(gun => {
-          gun.damage /= 1.5;
+          gun.damage /= 2;
         });
       }, this.duration);
     }

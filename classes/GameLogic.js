@@ -1,10 +1,11 @@
 class GameLogic {
-  constructor({ player, boxes }) {
+  constructor({ player, boxes, bottomPlatform }) {
     this.zombies = [];
     this.waveNumber = 1;
     this.spawningGap = 10000;
     this.player = player;
     this.boxes = boxes;
+    this.bottomPlatform = bottomPlatform;
     this.lastSpawn = Date.now();
     this.zombieToMoveAfterBox = [];
     this.updateScore(0);
@@ -19,6 +20,50 @@ class GameLogic {
 
     this.lastHitByZombieToBoxGap = 1500;
     this.bats = [];
+
+    this.powerUps = [];
+    this.powerUpTypes = [
+      BulletRain,
+      GunDamageInc,
+      HealthPowerUp,
+      HighJump,
+      RapidFire,
+    ];
+    this.lastPowerUpSpawn = Date.now();
+    this.powerUpSpawnGap = 8000;
+  }
+
+  spawnPowerUp() {
+    const PowerUpType =
+      this.powerUpTypes[Math.floor(Math.random() * this.powerUpTypes.length)];
+    const powerUp = new PowerUpType();
+    this.powerUps.push(powerUp);
+  }
+
+  updatePowerUps() {
+    
+    this.powerUps.forEach((powerUp,index) => {
+      powerUp.draw();
+      powerUp.resolvePowerUpBoxCollision(this.boxes);
+      powerUp.resolvePowerUpBoxCollision(this.bottomPlatform);
+      
+
+      if (
+        this.player.position.x < powerUp.position.x + 50 &&
+        this.player.position.x + this.player.width > powerUp.position.x &&
+        this.player.position.y < powerUp.position.y + 50 &&
+        this.player.position.y + this.player.height > powerUp.position.y
+      ) {
+        this.player.collectPowerUp(powerUp);
+        this.powerUps.splice(index, 1);
+      }
+
+      if (powerUp.position.y > canvas.height) {
+        this.powerUps.splice(index, 1);
+      }
+    });
+
+    
   }
 
   spawnZombies() {
@@ -210,6 +255,14 @@ class GameLogic {
       this.spawnZombies();
       this.lastSpawn = timeNow;
     }
+
+    if (timeNow - this.lastPowerUpSpawn > this.powerUpSpawnGap) {
+      this.spawnPowerUp();
+      this.lastPowerUpSpawn = timeNow;
+    }
+
+    this.updatePowerUps();
+
     this.zombies.forEach((zombie) => {
       if (zombie.resolveZombieBulletCollision(this.player.bullets)) {
         if (zombie.isZombieDead()) {
@@ -222,7 +275,7 @@ class GameLogic {
             this.updateScore(10);
           } else if (zombie.namee === "boxZombie") {
             this.updateScore(20);
-          }else if(zombie.namee === "batZombie"){
+          } else if (zombie.namee === "batZombie") {
             this.updateScore(50);
           }
         }
@@ -269,7 +322,7 @@ class GameLogic {
     });
     for (let i = this.bats.length - 1; i >= 0; i--) {
       if (this.bats[i].isDead) {
-       this.bats.splice(i, 1);
+        this.bats.splice(i, 1);
       } else {
         this.bats[i].update();
       }

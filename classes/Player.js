@@ -326,6 +326,12 @@ class Player extends Sprite {
     this.hitPointsBar.render();
   }
 
+
+  collectPowerUp(powerUp) {
+    powerUp.applyPrp(this);
+  }
+
+
   update() {
     super.update();
     this.updateActualBox();

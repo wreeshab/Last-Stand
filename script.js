@@ -20,11 +20,6 @@ let gameOver = false;
 
 const gravity = 0.5;
 
-const powerUps = [];
-const powerUpTypes = [BulletRain, GunDamageInc, HealthPowerUp, HighJump, RapidFire];
-let lastPowerUpTime = 0;
-
-
 const keys = {
   w: { pressed: false },
   a: { pressed: false },
@@ -143,8 +138,11 @@ const player = new Player({
   boxes,
 });
 
-const gameLogic = new GameLogic({ player, boxes, gameOver });
-
+const gameLogic = new GameLogic({
+  player,
+  boxes,
+  bottomPlatform: [bottomPlatform], //here im sending the bottom platform as an array because im iterating over it during powerUp collision
+});
 
 function mainGameLoop() {
   if (gamePaused) {
