@@ -7,7 +7,8 @@ class Bullet {
       this.boxes = boxes;
       this.bullets = bullets;
       this.damage = damage;
-      
+      this.isPiercing = false;
+           
     }
   
     draw() {

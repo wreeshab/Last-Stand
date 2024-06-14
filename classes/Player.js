@@ -37,6 +37,8 @@ class Player extends Sprite {
 
     this.bulletShotForRecoil = false;
 
+    this.jumpPower = 15;
+
     const self = this;
     document.addEventListener("mousemove", function (e) {
       self.updateGunAngle(e);
@@ -183,10 +185,12 @@ class Player extends Sprite {
       startY: this.actualBox.position.y + this.actualBox.height / 2,
       angle: this.gunAngle,
       velocity: 251,
-      gravity: 100,
+      gravity: this.guns[this.currentGun].BulletGravity,
       color: "rgba(255, 255, 255, 0.95)",
     });
-
+    console.log(trajectory);
+    // trajectory.gravity = this.guns[this.currentGun].BulletGravity;
+    // trajectory.velocity = this.guns[this.currentGun].bulletVelocity
     trajectory.draw();
   }
 
@@ -369,7 +373,7 @@ class Player extends Sprite {
     }
 
     if (keys.w.pressed && this.isOnGround) {
-      this.velocity.y = -15;
+      this.velocity.y = -(this.jumpPower);
       this.isOnGround = false;
     }
 
