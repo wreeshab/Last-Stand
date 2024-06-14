@@ -1,6 +1,12 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+const background = new Image();
+background.src = "./assets/backgrounds/background1.png";
+background.onload = () => {
+  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+};
+
 const pauseButton = document.getElementById("pause");
 const gameOverPopup = document.getElementById("game-over-pop");
 const restartButton = document.getElementById("restart");
@@ -14,11 +20,10 @@ let gameOver = false;
 
 const gravity = 0.5;
 
-const background = new Image();
-background.src = "./assets/backgrounds/background1.png";
-background.onload = () => {
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-};
+const powerUps = [];
+const powerUpTypes = [BulletRain, GunDamageInc, HealthPowerUp, HighJump, RapidFire];
+let lastPowerUpTime = 0;
+
 
 const keys = {
   w: { pressed: false },
@@ -139,6 +144,7 @@ const player = new Player({
 });
 
 const gameLogic = new GameLogic({ player, boxes, gameOver });
+
 
 function mainGameLoop() {
   if (gamePaused) {
