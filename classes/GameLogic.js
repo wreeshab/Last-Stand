@@ -2,7 +2,7 @@ class GameLogic {
   constructor({ player, boxes, bottomPlatform }) {
     this.zombies = [];
     this.waveNumber = 1;
-    this.spawningGap = 3000;
+    this.spawningGap = 1000;
     this.player = player;
     this.boxes = boxes;
     this.bottomPlatform = bottomPlatform;
@@ -31,7 +31,7 @@ class GameLogic {
     ];
     this.lastPowerUpSpawn = Date.now();
     this.powerUpSpawnGap = 8000;
-    this.zombiesToSpawn =5 ;
+    this.zombiesToSpawn =7 ;
     this.isPrepTime = true;
     this.prepTimeDuration = 20000;
     this.lastWaveEndTime = Date.now();
@@ -48,7 +48,7 @@ class GameLogic {
 
   startWave() {
     this.isPrepTime = false;
-    this.zombiesToSpawn = 5 + this.waveNumber - 1; //here im putting 5 zombies in the first round and then +1 for every next round
+    this.zombiesToSpawn = 7 + this.waveNumber; //here im putting 5 zombies in the first round and then +1 for every next round
     this.waveNumber++;
     document.getElementById("wave-value").innerHTML = this.waveNumber;
     
