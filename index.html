@@ -1,78 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="assets/favicon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Last Stand</title>
+    <link rel="stylesheet" href="landing.css">
 </head>
-
 <body>
-    <div id="score-board">
-        <div id="current-score">Current Score: <span id="current-score-value">0</span></div>
-        <div id="wave">Wave : <span id="wave-value">1</span></div>
-        <div id="prep-time">Prep Time: <span id="prep-time-value">0</span></div>
-        <div id="high-score">High Score: <span id="high-score-value">0</span></div>
-    </div>
-    <canvas id="canvas"></canvas>
+    <h1>Last</h1>
+    <h1>Stand</h1>
 
+    <div id="buttons">
+
+        <button id="start" onclick = "window.location.href='game.html'">Start</button>
+        <button id="how-to-play">How to Play</button>
+    </div>
+
+    <div id="how-to-play-container"></div>
+        
+
+    <script src="landing.js"></script>
     
-    <div id="control-panel">
-        <div id="place-box-container">
-            <button id="place-box"><img src="assets/crate.png" onclick="gameLogic.placeBox()" alt="">Press Q</button>
-            <button id="place-mine" onclick="gameLogic.placeMine()"><img src="assets/tnt.png" alt="">Press E</button>
-        </div>
-
-        <div id="inventory">
-            <div id="Normalgun" class="active"><img src="assets/guns/Normalgun.png" alt=""> Press 1</div>
-            <div id="Shotgun"><img src="assets/guns/Shotgun.png" alt=""> Press 2</div>
-            <div id="Rifle"><img src="assets/guns/Rifle.png" alt=""> Press 3</div>
-        </div>
-
-        <div id="control-buttons">
-            <button id="pause">Pause</button>
-            <button id="restart">Restart</button>
-        </div>
-
-        <div id="game-over-pop">
-            <img src="assets/favicon.png" alt="">
-            <p>Game Over</p>
-            <p>Your score: <span id="final-score">000</span></span></p>
-            <button id="play-again">Play Again</button>
-        </div>
-    </div>
-
-    <!-- Powerups -->
-    <script src="classes/powerups/Powerup.js"></script>
-    <script src="classes/powerups/BulletRainPowerUp.js"></script>
-    <script src="classes/powerups/GunDamageInc.js"></script>
-    <script src="classes/powerups/HeathPowerUp.js"></script>
-    <script src="classes/powerups/HighJump.js"></script>
-    <script src="classes/powerups/RapidFire.js"></script>
-    <!--End of prps -->
-
-
-    <script src="classes/Bullet.js"></script>
-    <script src="classes/Gun.js"></script>
-    <script src="classes/Mine.js"></script>
-    <script src="classes/HitpointsBar.js"></script>
-    <script src="classes/Trajectory.js"></script>
-    <script src="classes/Sprite.js"></script>
-    <script src="classes/Player.js"></script>
-    <script src="classes/Box.js"></script>
-    <script src="classes/Bat.js"></script>
-    <script src="classes/BatZombie.js"></script>
-    <script src="classes/BoxZombie.js"></script>
-    <script src="classes/ZombieBasic.js"></script>
-    <script src="classes/GameLogic.js"></script>
-    <script src="gameControlFunctions.js"></script>
-    <script src="script.js"></script>
-    <script src="eventListeners.js"></script>
 </body>
-
 </html>
