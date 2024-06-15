@@ -23,7 +23,7 @@ Your primary objective is to survive waves of incoming zombies by strategically 
 - During preparation time, you can:
   - **Place Blocks**: Up to 2 blocks to create barriers.
   - **Place Mines**: Up to 3 mines to damage zombies when they step on them.
-- Use the countdown timer to keep track of the remaining preparation time. -**Mines**: Explode upon contact with zombies, releasing 50 bullets with random velocity and gravity.
+- Use the countdown timer to keep track of the remaining preparation time. -**Mines**: Explode upon contact with zombies, releasing 50 bullets with random velocity and gravity. **Mines Placed on Boxes may not work**
 
 ### Auto Gun
 
