@@ -2,7 +2,7 @@ class GameLogic {
   constructor({ player, boxes, bottomPlatform }) {
     this.zombies = [];
     this.waveNumber = 1;
-    this.spawningGap = 10000;
+    this.spawningGap = 3000;
     this.player = player;
     this.boxes = boxes;
     this.bottomPlatform = bottomPlatform;
