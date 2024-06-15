@@ -1,7 +1,5 @@
 # Last Stand
 
-# Zombie Defense Game
-
 ## How to Play
 
 Welcome to the Zombie Defense Game! This guide will help you understand the game mechanics, the powers of different guns, preparation time, power-ups, and types of zombies you'll encounter.
