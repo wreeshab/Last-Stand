@@ -187,7 +187,7 @@ class ZombieBasic {
         this.attackingGap
       ) {
         this.lastAttackTime = this.timeNowForZombiePlayer;
-        player.playerGettingDamage(6);
+        player.playerGettingDamage(7);
         this.isAttacking = true;
         console.log("player getting damage");
       }else{

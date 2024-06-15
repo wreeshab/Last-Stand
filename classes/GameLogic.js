@@ -33,7 +33,7 @@ class GameLogic {
     this.powerUpSpawnGap = 8000;
     this.zombiesToSpawn =5 ;
     this.isPrepTime = true;
-    this.prepTimeDuration = 10000;
+    this.prepTimeDuration = 20000;
     this.lastWaveEndTime = Date.now();
 
     this.mines = [];
@@ -42,6 +42,8 @@ class GameLogic {
 
     this.boxesPlaced = 0;
     this.maximumBoxes = 2;
+
+    this.autoGun = new AutoGun({player:this.player})
   }
 
   startWave() {
@@ -373,6 +375,8 @@ class GameLogic {
       }
       mine.update();
     });
+
+    this.autoGun.update(this.zombies)
 
 
     

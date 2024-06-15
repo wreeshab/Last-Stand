@@ -185,7 +185,7 @@ class BoxZombie {
           this.attackingGap
         ) {
           this.lastAttackTime = this.timeNowForZombiePlayer;
-          player.playerGettingDamage(6);
+          player.playerGettingDamage(10);
           this.isAttacking = true;
           console.log("player getting damage");
         }else{

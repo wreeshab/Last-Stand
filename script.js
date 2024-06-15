@@ -86,7 +86,7 @@ const player = new Player({
     new Gun({
       name: "Normalgun",
       bulletVelocity: 20,
-      fireRate: 20, //50 bullet per second but its upto your skill
+      fireRate: 20, 
       damage: 10,
       recoil: 10,
       bulletGravity: 0.65,
@@ -96,7 +96,7 @@ const player = new Player({
       //low range  but shoots 3 bullets moderate recoil
       name: "Shotgun",
       bulletVelocity: 15,
-      fireRate: 750, // 2 bullets per second
+      fireRate: 750, 
       damage: 25,
       recoil: 30,
       bulletGravity: 1,
@@ -106,7 +106,7 @@ const player = new Player({
       //high range high damage high recoil
       name: "Rifle",
       bulletVelocity: 30,
-      fireRate: 750, //1 bullet per second
+      fireRate: 750, 
       damage: 50,
       recoil: 50,
       bulletGravity: 0.5,
