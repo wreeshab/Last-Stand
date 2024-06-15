@@ -27,9 +27,9 @@ class Mine {
     zombies.forEach((zombie) => {
       if (
         zombie.position.x < this.position.x + 50 &&
-        zombie.position.x + zombie.width > this.position.x &&
-        zombie.position.y < this.position.y + 50 &&
-        zombie.position.y + 50 > this.position.y
+        zombie.position.x + zombie.width > this.position.x 
+        // zombie.position.y < this.position.y + 50 &&
+        // zombie.position.y + zombie.height > this.position.y
       ) {
         this.blastMine();
         this.zombieSteppedOnMine = true;
