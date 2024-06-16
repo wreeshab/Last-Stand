@@ -28,9 +28,10 @@ class GameLogic {
       HealthPowerUp,
       HighJump,
       RapidFire,
+      JetPack
     ];
     this.lastPowerUpSpawn = Date.now();
-    this.powerUpSpawnGap = 8000;
+    this.powerUpSpawnGap = 6000;
     this.zombiesToSpawn =7 ;
     this.isPrepTime = true;
     this.prepTimeDuration = 20000;

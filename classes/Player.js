@@ -39,6 +39,10 @@ class Player extends Sprite {
 
     this.jumpPower = 15;
 
+    this.jetpackOn = false;
+    this.jetpack = new Image();
+    this.jetpack.src = "./assets/jetpack.png";
+
     const self = this;
     document.addEventListener("mousemove", function (e) {
       self.updateGunAngle(e);
@@ -119,7 +123,7 @@ class Player extends Sprite {
       this.position.y =
         platformTop -
         this.actualBox.height -
-        (this.actualBox.position.y - this.position.y) 
+        (this.actualBox.position.y - this.position.y);
       this.velocity.y = 0;
       this.isOnGround = true;
     }
@@ -135,7 +139,7 @@ class Player extends Sprite {
       this.position.x =
         platformLeft -
         this.actualBox.width -
-        (this.actualBox.position.x - this.position.x) 
+        (this.actualBox.position.x - this.position.x);
       this.velocity.x = 0;
     }
 
@@ -148,7 +152,7 @@ class Player extends Sprite {
       this.velocity.x < 0
     ) {
       this.position.x =
-        platformRight - (this.actualBox.position.x - this.position.x) 
+        platformRight - (this.actualBox.position.x - this.position.x);
       this.velocity.x = 0;
     }
   }
@@ -206,16 +210,20 @@ class Player extends Sprite {
       return;
     }
     this.lastShotTime = timeNowForShootBullet;
-    if(this.currentGun === 1){
-      for(let i = 0; i < 5; i++){
+    if (this.currentGun === 1) {
+      for (let i = 0; i < 5; i++) {
         const bullet = new Bullet({
           position: {
             x: this.actualBox.position.x + this.actualBox.width / 2,
             y: this.actualBox.position.y + this.actualBox.height / 2,
           },
           velocity: {
-            x: Math.cos(this.gunAngle- Math.PI / 6 +  (Math.PI/12 * i)) * this.guns[this.currentGun].bulletVelocity,
-            y: Math.sin(this.gunAngle - Math.PI / 6 + (Math.PI/12 * i) ) * this.guns[this.currentGun].bulletVelocity,
+            x:
+              Math.cos(this.gunAngle - Math.PI / 6 + (Math.PI / 12) * i) *
+              this.guns[this.currentGun].bulletVelocity,
+            y:
+              Math.sin(this.gunAngle - Math.PI / 6 + (Math.PI / 12) * i) *
+              this.guns[this.currentGun].bulletVelocity,
           },
           damage: this.guns[this.currentGun].damage,
           // bulletGravity: .65,
@@ -225,33 +233,33 @@ class Player extends Sprite {
         });
         this.bullets.push(bullet);
       }
-    }else{
-
-    const bullet = new Bullet({
-      position: {
-        x: this.actualBox.position.x + this.actualBox.width / 2,
-        y: this.actualBox.position.y + this.actualBox.height / 2,
-      },
-      velocity: {
-        x: Math.cos(this.gunAngle) * this.guns[this.currentGun].bulletVelocity,
-        y: Math.sin(this.gunAngle) * this.guns[this.currentGun].bulletVelocity,
-      },
-      damage: this.guns[this.currentGun].damage,
-      // bulletGravity: .65,
-      bulletGravity: this.guns[this.currentGun].bulletGravity,
-      boxes: this.boxes,
-      bullets: this.bullets,
-    });
-    this.bullets.push(bullet);
+    } else {
+      const bullet = new Bullet({
+        position: {
+          x: this.actualBox.position.x + this.actualBox.width / 2,
+          y: this.actualBox.position.y + this.actualBox.height / 2,
+        },
+        velocity: {
+          x:
+            Math.cos(this.gunAngle) * this.guns[this.currentGun].bulletVelocity,
+          y:
+            Math.sin(this.gunAngle) * this.guns[this.currentGun].bulletVelocity,
+        },
+        damage: this.guns[this.currentGun].damage,
+        // bulletGravity: .65,
+        bulletGravity: this.guns[this.currentGun].bulletGravity,
+        boxes: this.boxes,
+        bullets: this.bullets,
+      });
+      this.bullets.push(bullet);
     }
-    
 
     // this.update()
     this.bulletShotForRecoil = true;
-      this.updateActualBox()
-    this.boxes.forEach((box)=>{
+    this.updateActualBox();
+    this.boxes.forEach((box) => {
       this.collisionBetweenPlayerAndPlatform(box);
-    })
+    });
   }
 
   switchGun(index) {
@@ -326,18 +334,31 @@ class Player extends Sprite {
     this.hitPointsBar.render();
   }
 
-
   collectPowerUp(powerUp) {
     powerUp.applyPrp(this);
   }
 
+  drawJetpack() {
+    if (this.jetpackOn) {
+      ctx.drawImage(
+        this.jetpack,
+        this.actualBox.position.x + this.actualBox.width / 2 - 37.5,
+        this.actualBox.position.y,
+        75,
+        75
+      );
+    }
+  }
 
   update() {
     super.update();
     this.updateActualBox();
+
     // this.updateTrajectory();
+    this.drawJetpack();
     this.draw();
     this.drawGun();
+
     this.hitPointsBar.update(this.hitpoints);
 
     this.bullets.forEach((bullet, index) => {
@@ -347,10 +368,9 @@ class Player extends Sprite {
       }
     });
 
-    this.boxes.forEach((box)=>{
-      this.collisionBetweenPlayerAndPlatform(box)
-
-    })
+    this.boxes.forEach((box) => {
+      this.collisionBetweenPlayerAndPlatform(box);
+    });
 
     this.velocity.y += gravity;
 
@@ -368,22 +388,26 @@ class Player extends Sprite {
     } else {
       this.velocity.x = 0;
     }
-    if(this.bulletShotForRecoil){
-      
-    //putting recoil
-    this.velocity.x -=
-    Math.cos(this.gunAngle) * this.guns[this.currentGun].recoil;
-  this.position.y -=
-    Math.sin(this.gunAngle) * this.guns[this.currentGun].recoil;
-      this.bulletShotForRecoil= false;
+    if (this.bulletShotForRecoil) {
+      //putting recoil
+      this.velocity.x -=
+        Math.cos(this.gunAngle) * this.guns[this.currentGun].recoil;
+      this.position.y -=
+        Math.sin(this.gunAngle) * this.guns[this.currentGun].recoil;
+      this.bulletShotForRecoil = false;
     }
 
     if (keys.w.pressed && this.isOnGround) {
-      this.velocity.y = -(this.jumpPower);
-      this.isOnGround = false;
+      this.velocity.y = -this.jumpPower;
+      if (this.jetpackOn) {
+        this.isOnGround = true;
+      } else {
+        this.isOnGround = false;
+      }
     }
-
-    if (!this.isOnGround) {
+    if (this.jetpackOn) {
+      this.switchSprite("Idle");
+    } else if (!this.isOnGround) {
       this.switchSprite("Jump");
     } else if (keys.d.pressed || keys.a.pressed) {
       this.switchSprite("Run");
@@ -398,6 +422,10 @@ class Player extends Sprite {
       this.position.y = canvas.height - this.height;
       this.velocity.y = 0;
       this.isOnGround = true;
+    }
+
+    if(this.actualBox.position.y < 0 ){
+      this.actualBox.position.y = 0;
     }
   }
 }

@@ -134,6 +134,11 @@ const player = new Player({
       frameRate: 6,
       frameBuffer: 15,
     },
+    Hurt: {
+      imageSrc: "./assets/hero1/Biker_hurt.png",
+      frameRate: 2,
+      frameBuffer: 5,
+    },
   },
   boxes,
 });

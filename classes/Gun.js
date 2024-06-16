@@ -26,8 +26,8 @@ class Gun {
       this.image.height * scaleRatio
     );
 
-    ctx.fillStyle = "rgba(255, 255, 255,.3)";
-    ctx.fillRect(0,0,this.image.width * scaleRatio,this.image.height * scaleRatio)
+    // ctx.fillStyle = "rgba(255, 255, 255,.3)";
+    // ctx.fillRect(0,0,this.image.width * scaleRatio,this.image.height * scaleRatio)
     ctx.restore();
   }
 }
