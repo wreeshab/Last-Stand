@@ -425,7 +425,7 @@ class Player extends Sprite {
     }
 
     if(this.actualBox.position.y < 0 ){
-      this.actualBox.position.y = 0;
+      this.position.y = 0;
     }
   }
 }
