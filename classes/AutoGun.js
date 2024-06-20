@@ -32,7 +32,7 @@ class AutoGun {
       0,
       this.gunOpertor.width / 4,
       this.gunOpertor.height,
-      canvas.width / 2 ,
+      canvas.width / 2,
       200,
       200,
       150
@@ -46,7 +46,7 @@ class AutoGun {
     }
 
     this.position = {
-      x: canvas.width / 2 +50,
+      x: canvas.width / 2 + 50,
       y: 300,
     };
 
@@ -80,7 +80,7 @@ class AutoGun {
           damage: 5,
           boxes: this.player.boxes,
           bullets: this.player.bullets,
-          radius:4,
+          radius: 4,
         })
       );
     }

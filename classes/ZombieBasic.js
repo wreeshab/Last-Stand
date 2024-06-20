@@ -156,13 +156,13 @@ class ZombieBasic {
       ctx.restore();
     }
 
-    ctx.fillStyle = "rgba(255, 0, 0, 0.4)";
-    ctx.fillRect(
-      this.position.x,
-      this.position.y - this.height,
-      this.width,
-      this.height
-    );
+    // ctx.fillStyle = "rgba(255, 0, 0, 0.4)";
+    // ctx.fillRect(
+    //   this.position.x,
+    //   this.position.y - this.height,
+    //   this.width,
+    //   this.height
+    // );
 
     // Update hit points bar position
     this.zombieHitPointsBar.position = {

@@ -7,7 +7,6 @@ class Box {
     this.crateImage.src = "./assets/crate.png";
     this.hitpoints = 100;
 
-    // Initialize hit points bar
     this.boxHitPointsBar = new HitPointsBar({
       position: {
         x: this.position.x + this.width / 2 - 40,
@@ -29,9 +28,7 @@ class Box {
       this.height
     );
 
-    // Render hit points bar
     this.boxHitPointsBar.update(this.hitpoints);
-    // this.boxHitPointsBar.render();
   }
 
   takeDamageBox(damage) {
@@ -43,24 +40,24 @@ class Box {
     return this.hitpoints <= 0;
   }
   collisionBetweenBoxAndZombie(zombie) {
-    if(zombie.namee === "boxZombie") return false;
+    if (zombie.namee === "boxZombie") return false;
     if (
       this.position.x < zombie.position.x + zombie.width &&
       this.position.x + this.width > zombie.position.x &&
       zombie.direction === "left"
     ) {
-      zombie.position.x = this.position.x + this.width + .01;
+      zombie.position.x = this.position.x + this.width + 0.01;
       // zombie.velocity.x = 0;
       zombie.isAttacking = true;
-    }else if(
+    } else if (
       this.position.x < zombie.position.x + zombie.width &&
       this.position.x + this.width > zombie.position.x &&
       zombie.direction === "right"
-    ){
-      zombie.position.x = this.position.x - zombie.width - .01;
+    ) {
+      zombie.position.x = this.position.x - zombie.width - 0.01;
       // zombie.velocity.x = 0;
       zombie.isAttacking = true;
-    }else{
+    } else {
       zombie.isAttacking = false;
     }
     return zombie.isAttacking;
@@ -79,5 +76,3 @@ class BottomPlatform {
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 }
-
-

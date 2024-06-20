@@ -1,5 +1,13 @@
 class Gun {
-  constructor({ name, bulletVelocity, fireRate, damage, imageSrc ,bulletGravity,recoil}) {
+  constructor({
+    name,
+    bulletVelocity,
+    fireRate,
+    damage,
+    imageSrc,
+    bulletGravity,
+    recoil,
+  }) {
     this.name = name;
     this.bulletVelocity = bulletVelocity;
     this.fireRate = fireRate;

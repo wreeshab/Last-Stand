@@ -17,9 +17,7 @@ class Bat {
     this.player = player;
     this.isDead = false;
 
-    this.health = 
-
-    this.xDir = 0;
+    this.health = this.xDir = 0;
     this.yDir = 0;
     this.distance = 0;
     this.unitXDir = 0;
@@ -76,8 +74,13 @@ class Bat {
 
   collisionBetweenBatAndBullet() {
     this.player.bullets.forEach((bullet) => {
-      console.log("yo")
-      if(bullet.position.x > this.position.x && bullet.position.x < this.position.x + this.width && bullet.position.y > this.position.y && bullet.position.y < this.position.y + this.height){
+      console.log("yo");
+      if (
+        bullet.position.x > this.position.x &&
+        bullet.position.x < this.position.x + this.width &&
+        bullet.position.y > this.position.y &&
+        bullet.position.y < this.position.y + this.height
+      ) {
         this.isDead = true;
       }
     });

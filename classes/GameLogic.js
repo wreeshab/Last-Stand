@@ -12,6 +12,7 @@ class GameLogic {
     this.currentScore = 0;
     document.getElementById("current-score-value").innerHTML =
       this.currentScore;
+    document.getElementById("final-score").innerHTML = this.currentScore;
     this.highScore = 0;
     this.typesOfZombies = ["ZombieBasic", "BoxZombie"];
     this.waveNumber = 1;
@@ -28,11 +29,11 @@ class GameLogic {
       HealthPowerUp,
       HighJump,
       RapidFire,
-      JetPack
+      JetPack,
     ];
     this.lastPowerUpSpawn = Date.now();
     this.powerUpSpawnGap = 6000;
-    this.zombiesToSpawn =7 ;
+    this.zombiesToSpawn = 7;
     this.isPrepTime = true;
     this.prepTimeDuration = 20000;
     this.lastWaveEndTime = Date.now();
@@ -44,7 +45,7 @@ class GameLogic {
     this.boxesPlaced = 0;
     this.maximumBoxes = 2;
 
-    this.autoGun = new AutoGun({player:this.player})
+    this.autoGun = new AutoGun({ player: this.player });
   }
 
   startWave() {
@@ -52,14 +53,12 @@ class GameLogic {
     this.zombiesToSpawn = 7 + this.waveNumber; //here im putting 5 zombies in the first round and then +1 for every next round
     this.waveNumber++;
     document.getElementById("wave-value").innerHTML = this.waveNumber;
-    
   }
 
   startPreparation() {
     this.isPrepTime = true;
     this.lastWaveEndTime = Date.now();
     this.powerUps = [];
-  
   }
 
   spawnPowerUp() {
@@ -274,30 +273,35 @@ class GameLogic {
     document.getElementById("final-score").innerHTML = this.currentScore;
   }
 
-  placeMine(){
-    if(this.numberOfMinesPlaced >= this.numberOfMines ) return;
-     if(this.player.isOnGround && this.isPrepTime){
-      const mine = new Mine({player:this.player})
-      this.mines.push(mine)
-      this.numberOfMinesPlaced++
+  placeMine() {
+    if (this.numberOfMinesPlaced >= this.numberOfMines) return;
+    if (this.player.isOnGround && this.isPrepTime) {
+      const mine = new Mine({ player: this.player });
+      this.mines.push(mine);
+      this.numberOfMinesPlaced++;
+      document.getElementById("number-mine").innerHTML =
+        this.numberOfMines - this.numberOfMinesPlaced;
     }
-
   }
 
-  placeBox(){
-    if(this.boxesPlaced >= this.maximumBoxes) return;
-    if(this.player.isOnGround && this.isPrepTime){
+  placeBox() {
+    if (this.boxesPlaced >= this.maximumBoxes) return;
+    if (this.player.isOnGround && this.isPrepTime) {
       const box = new Box({
-        position: { x: this.player.actualBox.position.x, y: this.player.actualBox.position.y },
+        position: {
+          x: this.player.actualBox.position.x,
+          y: this.player.actualBox.position.y,
+        },
         width: 100,
         height: 100,
-      })
-      this.boxes.push(box)
+      });
+      this.boxes.push(box);
       this.boxesPlaced++;
+      document.getElementById("number-box").innerHTML =
+        this.maximumBoxes - this.boxesPlaced;
     }
   }
 
-  
   update() {
     if (this.player.playerIsDead()) {
       this.gameOver = true;
@@ -322,7 +326,7 @@ class GameLogic {
         }
       }
     });
-    const timeNow = new Date(); 
+    const timeNow = new Date();
     this.zombies.forEach((zombie) => {
       if (zombie.namee === "zombieBasic" || zombie.namee === "batZombie") {
         this.timeNowForBoxZombie = new Date();
@@ -369,39 +373,40 @@ class GameLogic {
       }
     }
 
-    this.mines.forEach((mine,index) => {
-      if(mine.detectZombieMineCollision(this.zombies)){
-        console.log("mines hit zombies")
-        this.mines.splice(index,1)
+    this.mines.forEach((mine, index) => {
+      if (mine.detectZombieMineCollision(this.zombies)) {
+        console.log("mines hit zombies");
+        this.mines.splice(index, 1);
       }
       mine.update();
     });
 
-    this.autoGun.update(this.zombies)
+    this.autoGun.update(this.zombies);
 
-
-    
-
-    //wave management dont go below this comment to code!!
+    //wave management dont go below this comment to code. highly volatile return statements crafted with atmost care below!!!!
 
     const timeNowForWaves = Date.now();
     if (this.isPrepTime) {
-      document.getElementById("prep-time-value").innerHTML =
-        Math.round((this.prepTimeDuration - (timeNowForWaves - this.lastWaveEndTime)) / 1000) 
+      document.getElementById("prep-time-value").innerHTML = Math.round(
+        (this.prepTimeDuration - (timeNowForWaves - this.lastWaveEndTime)) /
+          1000
+      );
       if (timeNowForWaves - this.lastWaveEndTime > this.prepTimeDuration) {
         this.startWave();
       }
-      return; 
+      return;
     }
     if (timeNowForWaves - this.lastPowerUpSpawn > this.powerUpSpawnGap) {
-      
       this.spawnPowerUp();
       this.lastPowerUpSpawn = timeNowForWaves;
     }
     this.updatePowerUps();
-   
-    if (timeNowForWaves - this.lastSpawn > this.spawningGap && this.zombiesToSpawn > 0 && !this.isPrepTime) {
-      
+
+    if (
+      timeNowForWaves - this.lastSpawn > this.spawningGap &&
+      this.zombiesToSpawn > 0 &&
+      !this.isPrepTime
+    ) {
       this.spawnZombies();
       this.lastSpawn = timeNowForWaves;
     }
@@ -410,6 +415,5 @@ class GameLogic {
       this.boxesPlaced = 0;
       this.startPreparation();
     }
-
   }
 }

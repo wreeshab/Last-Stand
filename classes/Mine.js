@@ -17,8 +17,8 @@ class Mine {
   }
   place() {
     ctx.drawImage(this.image, this.position.x, this.position.y, 50, 50);
-    ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-    ctx.fillRect(this.position.x, this.position.y, 50, 50);
+    // ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    // ctx.fillRect(this.position.x, this.position.y, 50, 50);
   }
   update() {
     this.place();
@@ -27,7 +27,7 @@ class Mine {
     zombies.forEach((zombie) => {
       if (
         zombie.position.x < this.position.x + 50 &&
-        zombie.position.x + zombie.width > this.position.x 
+        zombie.position.x + zombie.width > this.position.x
         // zombie.position.y < this.position.y + 50 &&
         // zombie.position.y + zombie.height > this.position.y
       ) {

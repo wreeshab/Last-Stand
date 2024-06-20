@@ -1,4 +1,3 @@
-
 class HealthPowerUp extends PowerUp {
   constructor() {
     super("assets/powerups/Health.png");

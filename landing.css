@@ -1,100 +1,101 @@
-@import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nosifer&display=swap");
 
-*{
-    margin: 0;
-    padding: 0;
-    font-family: 'Nosifer', cursive;
-    user-select: none;
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Nosifer", cursive;
+  user-select: none;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    flex-direction: column;
-    background: url(assets/landing.jpg);
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  flex-direction: column;
+  background: url(assets/landing.jpg);
 }
 
 h1 {
-    text-align: center;
-    font-size: 110px;
-    margin-bottom: 20px;
-    color: #74736d;
-    text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.733);
+  text-align: center;
+  font-size: 110px;
+  margin-bottom: 20px;
+  color: #74736d;
+  text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.733);
 }
 
-
 #buttons {
-    text-align: center;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
 #buttons button {
-    margin: 0 10px;
+  margin: 0 10px;
 }
 button {
-    background-color: #332c22; /* Stone color */
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 15px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 200px;
-    padding: 30px;
-    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.5), 5px 5px 15px rgba(0, 0, 0, 0.4);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-    background-image: radial-gradient(circle, #5f6b6b, #443e3e);
-    transition: transform 0.1s ease-in-out;
+  background-color: #332c22; /* Stone color */
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 15px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 200px;
+  padding: 30px;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.5),
+    5px 5px 15px rgba(0, 0, 0, 0.4);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  background-image: radial-gradient(circle, #5f6b6b, #443e3e);
+  transition: transform 0.1s ease-in-out;
 }
 button:hover {
-    transform: rotate(10deg);
+  transform: rotate(10deg);
 }
-a{
-    text-decoration: none;
-    color: #fff;
+a {
+  text-decoration: none;
+  color: #fff;
 }
 
 button:active {
-    transform: translateY(10px);
+  transform: translateY(10px);
 }
 
-#start{
-    font-size: 25px;
+#start {
+  font-size: 25px;
 }
 
 button:hover {
-    background-color: #3e8e41;
+  background-color: #3e8e41;
 }
 
 #how-to-play-container {
-    display: none;
-    padding: 20px;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 50%;
-    margin: 40px auto;
-    background-color: #fff;
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  margin: 40px auto;
+  background-color: #fff;
 }
 
 #how-to-play-container h2 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 #how-to-play-container p {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }

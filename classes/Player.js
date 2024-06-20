@@ -318,13 +318,13 @@ class Player extends Sprite {
     super.draw();
 
     ctx.restore();
-    ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
-    ctx.fillRect(
-      this.actualBox.position.x,
-      this.actualBox.position.y,
-      this.actualBox.width,
-      this.actualBox.height
-    );
+    // ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
+    // ctx.fillRect(
+    //   this.actualBox.position.x,
+    //   this.actualBox.position.y,
+    //   this.actualBox.width,
+    //   this.actualBox.height
+    // );
 
     this.hitPointsBar.position = {
       x: this.actualBox.position.x + this.actualBox.width / 2 - 40,
@@ -353,11 +353,14 @@ class Player extends Sprite {
   update() {
     super.update();
     this.updateActualBox();
-
-    // this.updateTrajectory();
     this.drawJetpack();
+    if(this.currentGun === 0 ){
+      this.updateTrajectory();
+    }
     this.draw();
     this.drawGun();
+
+
 
     this.hitPointsBar.update(this.hitpoints);
 
@@ -424,7 +427,7 @@ class Player extends Sprite {
       this.isOnGround = true;
     }
 
-    if(this.actualBox.position.y < 0 ){
+    if (this.position.y < 0) {
       this.position.y = 0;
     }
   }

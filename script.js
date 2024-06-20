@@ -38,11 +38,6 @@ const boxes = [
     height: 100,
   }),
   new Box({
-    position: { x: canvas.width / 2 + 300, y: canvas.height - 130 },
-    width: 100,
-    height: 100,
-  }),
-  new Box({
     position: { x: canvas.width / 2 + 150, y: canvas.height - 230 },
     width: 100,
     height: 100,
@@ -54,11 +49,6 @@ const boxes = [
   }),
   new Box({
     position: { x: canvas.width / 2 - 300, y: canvas.height - 130 },
-    width: 100,
-    height: 100,
-  }),
-  new Box({
-    position: { x: canvas.width / 2 - 400, y: canvas.height - 130 },
     width: 100,
     height: 100,
   }),
@@ -86,7 +76,7 @@ const player = new Player({
     new Gun({
       name: "Normalgun",
       bulletVelocity: 20,
-      fireRate: 20, 
+      fireRate: 20,
       damage: 10,
       recoil: 10,
       bulletGravity: 0.65,
@@ -95,18 +85,18 @@ const player = new Player({
     new Gun({
       //low range  but shoots 3 bullets moderate recoil
       name: "Shotgun",
-      bulletVelocity: 15,
-      fireRate: 750, 
+      bulletVelocity: 20,
+      fireRate: 750,
       damage: 25,
       recoil: 30,
-      bulletGravity: 1,
+      bulletGravity: 1.2,
       imageSrc: "./assets/guns/Shotgun.png",
     }),
     new Gun({
       //high range high damage high recoil
       name: "Rifle",
       bulletVelocity: 30,
-      fireRate: 750, 
+      fireRate: 750,
       damage: 50,
       recoil: 50,
       bulletGravity: 0.5,
