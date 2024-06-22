@@ -39,8 +39,8 @@ class Bat {
       this.width / 2,
       this.height
     );
-    ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
-    ctx.fillRect(this.position.x, this.position.y, this.width / 2, this.height);
+    // ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+    // ctx.fillRect(this.position.x, this.position.y, this.width / 2, this.height);
 
     this.elapsedFrames++;
 
