@@ -5,6 +5,7 @@ class HighJump extends PowerUp {
   }
 
   applyPrp(player) {
+    if(player.jetpackOn) return;
     player.jumpPower += 5;
     setTimeout(() => {
       player.jumpPower -= 5;

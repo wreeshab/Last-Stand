@@ -8,10 +8,10 @@ class JetPack extends PowerUp {
     if (player.jetpackOn) return;
 
     player.jetpackOn = true;
-    player.jumpPower = 4;
+    player.jumpPower -= 10;
     setTimeout(() => {
       player.jetpackOn = false;
-      player.jumpPower = 15;
+      player.jumpPower += 10;
     }, this.duration);
   }
 }
