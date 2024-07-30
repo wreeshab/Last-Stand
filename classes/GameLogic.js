@@ -56,6 +56,9 @@ class GameLogic {
   }
 
   startPreparation() {
+    if (this.player.hitpoints < 60) {
+      this.player.hitpoints += 30;
+    }
     this.isPrepTime = true;
     this.lastWaveEndTime = Date.now();
     this.powerUps = [];
