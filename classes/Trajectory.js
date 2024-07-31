@@ -1,3 +1,6 @@
+//done
+
+//uses the concept of virtual time to generate parabola that is independent of time.
 class Trajectory {
   constructor({
     startX,

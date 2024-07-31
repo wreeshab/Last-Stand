@@ -1,3 +1,5 @@
+//reviewed
+
 class GameLogic {
   constructor({ player, boxes, bottomPlatform }) {
     this.zombies = [];

@@ -1,3 +1,5 @@
+//done
+
 class BoxZombie {
     constructor({
       placeOfSpawn,
@@ -46,8 +48,8 @@ class BoxZombie {
               this.width = img.width / 2;
               this.height = img.height / 2;
             }
-            img.width = this.width;
-            img.height = this.height;
+            // img.width = this.width;
+            // img.height = this.height;
           };
           frames.push(img);
         }
@@ -128,6 +130,7 @@ class BoxZombie {
     }
     draw() {
       const image = this.images[this.currentAnimation][this.currentFrame - 1];
+      console.log(this.images)
       if (image) {
         ctx.save();
   
@@ -137,12 +140,13 @@ class BoxZombie {
             this.position.y - this.height / 2
           );
           ctx.scale(-1, 1);
+          //coordinates of canvas is going back to original place. This ensures that the image is drawn at the correct location on the canvas, even after the flip(need not worry about this in guns as we're just rotating).
           ctx.translate(
             -this.position.x - this.width / 2,
             -this.position.y + this.height / 2
           );
         }
-  
+        //the previous translate helps....
         ctx.drawImage(
           image,
           this.position.x,
@@ -187,7 +191,7 @@ class BoxZombie {
           this.lastAttackTime = this.timeNowForZombiePlayer;
           player.playerGettingDamage(10);
           this.isAttacking = true;
-          console.log("player getting damage");
+          // console.log("player getting damage");
         }else{
           this.isAttacking = false;
         }

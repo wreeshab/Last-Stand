@@ -1,3 +1,5 @@
+//done
+
 class Mine {
   constructor({ player }) {
     this.position = {

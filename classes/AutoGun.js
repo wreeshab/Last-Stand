@@ -1,3 +1,4 @@
+//done
 class AutoGun {
   constructor({ player }) {
     this.position = {

@@ -1,3 +1,5 @@
+//done
+
 class Box {
   constructor({ position, width, height, hitpoints }) {
     this.position = position;

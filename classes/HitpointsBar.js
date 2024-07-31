@@ -1,3 +1,5 @@
+//done
+
 class HitPointsBar {
   constructor({ position, hitpoints, totalHitpoints, color = "red" }) {
     this.position = position;

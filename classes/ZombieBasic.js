@@ -1,3 +1,5 @@
+//done
+
 class ZombieBasic {
   constructor({
     placeOfSpawn,
@@ -48,8 +50,8 @@ class ZombieBasic {
             this.width = img.width / 2.5;
             this.height = img.height / 2.5;
           }
-          img.width = this.width;
-          img.height = this.height;
+          // img.width = this.width;
+          // img.height = this.height;
         };
         frames.push(img);
       }

@@ -1,3 +1,5 @@
+//done
+
 class Bullet {
   constructor({
     position,

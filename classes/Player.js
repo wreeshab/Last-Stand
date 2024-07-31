@@ -1,3 +1,6 @@
+//done
+
+//this.currentGun is an index of type int.
 class Player extends Sprite {
   constructor({
     position,
@@ -13,7 +16,7 @@ class Player extends Sprite {
     super({ position, imageSrc, frameRate, enlargementRatio, frameBuffer });
     this.velocity = { x: 0, y: 0 };
     this.isOnGround = false;
-    this.isFacingRight = true; // Track the direction the player is facing
+    this.isFacingRight = true; 
     this.actualBox = {
       position: { x: this.position.x, y: this.position.y },
       width: 0,
@@ -74,7 +77,7 @@ class Player extends Sprite {
     this.image = this.animations[sprite].image;
     this.frameRate = this.animations[sprite].frameRate;
     this.frameBuffer = this.animations[sprite].frameBuffer;
-    this.currentFrame = 0; // Changed from frameIndex to currentFrame
+    this.currentFrame = 0; 
   }
 
   updateGunAngle(e) {
@@ -82,6 +85,7 @@ class Player extends Sprite {
     const mouseY = e.clientY - canvas.offsetTop;
     const deltaX = mouseX - this.position.x - this.width / 2;
     const deltaY = mouseY - this.position.y - this.height / 2;
+    // atan2 >> atan because atan2 takes care of sign too, but the latter ignores it.
     const angle = Math.atan2(deltaY, deltaX);
     this.gunAngle = angle;
     this.adjustedGunAngle = this.gunAngle - 45;
@@ -157,31 +161,31 @@ class Player extends Sprite {
     }
   }
 
-  drawGun() {
-    ctx.save();
-    ctx.translate(
-      this.actualBox.position.x + this.actualBox.width / 2,
-      this.actualBox.position.y + this.actualBox.height / 2
-    );
-    this.adjustedGunAngle = this.gunAngle - Math.PI / 4 + Math.PI / 120; //this math.pi / 120 is some visual adjustment value that i found by trail and error
-    ctx.rotate(this.adjustedGunAngle);
-    const scaleRatio = 0.2;
-    ctx.drawImage(
-      this.gunImage,
-      0,
-      0,
-      this.gunImage.width * scaleRatio,
-      this.gunImage.height * scaleRatio
-    );
-    ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
-    ctx.fillRect(
-      1,
-      1,
-      this.gunImage.width * scaleRatio,
-      this.gunImage.height * scaleRatio
-    );
-    ctx.restore();
-  }
+  // drawGun() {
+  //   ctx.save();
+  //   ctx.translate(
+  //     this.actualBox.position.x + this.actualBox.width / 2,
+  //     this.actualBox.position.y + this.actualBox.height / 2
+  //   );
+  //   this.adjustedGunAngle = this.gunAngle - Math.PI / 4 + Math.PI / 120; //this math.pi / 120 is some visual adjustment value that i found by trail and error
+  //   ctx.rotate(this.adjustedGunAngle);
+  //   const scaleRatio = 0.2;
+  //   ctx.drawImage(
+  //     this.gunImage,
+  //     0,
+  //     0,
+  //     this.gunImage.width * scaleRatio,
+  //     this.gunImage.height * scaleRatio
+  //   );
+  //   ctx.fillStyle = "rgba(255, 0, 0, 0.2)";
+  //   ctx.fillRect(
+  //     1,
+  //     1,
+  //     this.gunImage.width * scaleRatio,
+  //     this.gunImage.height * scaleRatio
+  //   );
+  //   ctx.restore();
+  // }
 
   updateTrajectory() {
     const trajectory = new Trajectory({
@@ -192,7 +196,7 @@ class Player extends Sprite {
       gravity: this.guns[this.currentGun].BulletGravity,
       color: "rgba(255, 255, 255, 0.95)",
     });
-    console.log(trajectory);
+    // console.log(trajectory);
     // trajectory.gravity = this.guns[this.currentGun].BulletGravity;
     // trajectory.velocity = this.guns[this.currentGun].bulletVelocity
     trajectory.draw();
@@ -263,7 +267,6 @@ class Player extends Sprite {
   }
 
   switchGun(index) {
-    1;
     if (this.currentGun === index) return;
     if (index >= 0 && index < this.guns.length) {
       this.currentGun = index;

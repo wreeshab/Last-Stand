@@ -1,3 +1,5 @@
+//date
+
 class BatZombie {
   constructor({
     placeOfSpawn,
